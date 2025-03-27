@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/formularioManutencao.css">
+    <title>Formulário Manutenção</title>
+</head>
+<body>
+    <div class="container">
+        <form action="https://api.sheetmonkey.io/form/cxeJp3JDbApLuGTwwUP5qG" method="post" name="formularioManutencao">
+            <h1>Formulário</h1><br>
+
+            <div class="input-box">
+                <label for="data">Data</label>
+                <input type="date" id="data" name="Data">
+            </div>
+
+            <div class="input-box">
+                <label for="equipamento">Equipamento</label>
+                <select id="equipamento" name="Equipamento">
+                    <option value=""></option>
+                    <option value="Computador">Computador</option>
+                    <option value="Monitor">Monitor</option>
+                    <option value="Projetor">Projetor</option>
+                    <option value="Impressora">Impressora</option>
+                </select>
+            </div>
+
+            <div class="input-box">
+                <label for="num_serie">Número de Série</label>
+                <input type="text" id="num_serie" name="Numero de série">
+            </div>
+
+            <div class="input-box">
+                <label for="unidade">Unidade</label>
+                <select id="unidade" name="Unidade">
+                    <option value=""></option>
+                    <option value="DT">DT</option>
+                    <option value="BS">BS</option>
+                    <option value="PQL">PQL</option>
+                    <option value="PQL-II">PQL-II</option>
+                    <option value="PQL-III">PQL-III</option>
+                    <option value="SUL">SUL</option>
+                    <option value="SUL-II">SUL II</option>
+                    <option value="SUL-III">SUL III</option>
+                    <option value="PRE-SUL">PRÉ-SUL</option>
+                    <option value="BF">BF</option>
+                    <option value="PRE-NUNES">PRÉ-NUNES</option>
+                    <option value="JOVITA">JOVITA</option>
+                    <option value="DL">DL</option>
+                    <option value="PQE">PQE</option>
+                    <option value="KMC2">KMC2</option>
+                    <option value="SILVA-PAULET">SILVA PAULET</option>
+                    <option value="LCR">LCR</option>
+                    <option value="EUSEBIO">EUSÉBIO</option>
+                    <option value="ALDEOTA">ALDEOTA</option>
+                </select>
+            </div>
+
+            <div class="input-box">
+                <label for="setor">Setor</label>
+                <input type="text" id="setor" name="Setor">
+            </div>
+
+            <div class="input-box">
+                <label for="responsavel">Responsável</label>
+                <input type="text" id="responsavel" name="Responsavel">
+            </div>
+
+            <div class="input-box">
+                <label for="realizacao">Realização</label>
+                <input type="text" id="realizacao" name="Realizacao">
+            </div>
+
+            <div class="input-box">
+                <label for="tecnico">Técnico</label>
+                <select id="tecnico" name="Técnico">
+                    <option value="Célio">Célio</option>
+                </select>
+            </div>
+
+            <div class="input-box">
+                <label for="entrada">Entrada</label>
+                <input type="time" id="entrada" name="Entrada">
+            </div>
+
+            <div class="input-box">
+                <label for="saida">Saída</label>
+                <input type="time" id="saida" name="Saída">
+            </div>
+
+            <div class="input-box">
+                <label for="conclusao">Conclusão</label>
+                <select id="conclusao" name="Conclusao">
+                    <option value=""></option>
+                    <option value="Pronto">Pronto</option>
+                    <option value="Pendente">Pendente</option>
+                </select>
+            </div>
+
+            <div class="input-box">
+                <label for="descricao">Descrição do Serviço</label>
+                <textarea id="descricao" name="Descricao" placeholder="Digite o que foi realizado" minlength="30" rows="7" cols="40"></textarea>
+            </div>
+
+            <div class="envio-buttom">
+                <button type="submit" value="Enviar" id="Enviar">Enviar</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

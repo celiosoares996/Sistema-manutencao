@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Email</title>
+    <link rel="stylesheet" href="/css/geradorEmail.css">
+</head>
+<body>
+    <div class="container" id="form-container">
+        <form id="formulario">
+            <div class="input-box">
+                <label>Tombamento:</label>
+                <input type="text" id="tombamento">
+            </div>
+            
+            <div class="input-box">
+                <label>Setor:</label>
+                <input type="text" id="setor">
+            </div>
+           
+            <div class="input-box">
+                <label>Sede:</label>
+                <input type="text" id="sede">
+            </div>
+            
+            <div class="input-box">
+                <label>Defeito:</label>
+                <input type="text" id="defeito">
+            </div>
+            
+            <div class="input-box">
+                <label>Diagnóstico:</label>
+                <input type="text" id="diagnostico">
+            </div>
+
+            <div class="input-box">
+                <label>Reparo:</label>
+                <input type="text" id="reparo">
+            </div>
+        
+            <h3>Configuração Atual</h3><br>
+        
+            <div class="input-box">
+                <label>Placa mãe:</label>
+                <input type="text" id="placaMae">
+            </div>
+        
+            <div class="input-box">
+                <label>Processador:</label>
+                <input type="text" id="processador">
+            </div>
+        
+            <div class="input-box">
+                <label>Memória 1:</label>
+                <input type="text" id="memoria1">
+            </div>
+        
+            <div class="input-box">
+                <label>Memória 2:</label>
+                <input type="text" id="memoria2">
+            </div>
+        
+            <div class="input-box">
+                <label>Armazenamento:</label>
+                <input type="text" id="armazenamento">
+            </div>
+        
+            <div class="input-box">
+                <label>Total (R$):</label>
+                <input type="text" id="total">
+            </div>
+        
+            <div class="envio-buttom">
+                <button type="button" onclick="formatarDados()">Gerar e Copiar</button>
+            </div>
+        </form>
+    </div>
+    
+    <div class="container" id="resultado-container" style="display: none;">
+        <pre id="resultado"></pre>
+    </div>
+    <script src="/js/script.js"></script>
+</body>
+</html>
