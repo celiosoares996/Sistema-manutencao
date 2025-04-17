@@ -14,7 +14,7 @@ function formatarDados() {
     let total = document.getElementById("total").value;
 
     let textoFormatado = `
-Diego,
+Darkson,
 
 Segue o diagnóstico da máquina enviada para a manutenção:
 
