@@ -14,6 +14,7 @@ body {
     justify-content: center;
     align-items: center;
     background-color: #f5f5f5;
+    font-size: 16px;
 }
 
 .container {
@@ -21,58 +22,106 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: 500px;
+    max-width: 600px; /* Aumentei o limite para dar mais espaço ao formulário */
     background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1); /* Sombra mais suave e difusa */
     flex-direction: column;
+    transition: transform 0.3s ease;
+}
+
+.container:hover {
+    transform: scale(1.02); /* Adiciona um efeito sutil de zoom */
 }
 
 /* Estilização dos campos do formulário */
 .input-box {
     width: 100%;
-    margin-bottom: 15px; /* Espaçamento entre os campos */
+    margin-bottom: 20px; /* Espaçamento geral entre os campos */
+}
+
+.input-box:first-child {
+    margin-bottom: 30px; /* Maior espaçamento para o primeiro input (Tombamento) */
 }
 
 .input-box label {
     display: block;
     font-weight: 600;
-    margin-bottom: 5px; /* Espaço entre label e input */
+    margin-bottom: 8px; /* Maior espaço entre o label e o input */
+    color: #333;
+    font-size: 14px;
 }
 
 .input-box input, .input-box select, .input-box textarea {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Estilização do foco do input */
+.input-box input:focus, .input-box select:focus, .input-box textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.2);
+    outline: none;
 }
 
 /* Melhorando a textarea */
 .input-box textarea {
     resize: none;
+    min-height: 100px; /* Definindo uma altura mínima para a textarea */
+}
+
+/* Estilização dos campos inline */
+.input-inline {
+    display: flex;
+    gap: 15px; /* Adiciona espaço entre os campos inline */
+    width: 100%;
+}
+
+.input-inline input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
 }
 
 /* Estilização dos botões */
 .envio-buttom {
     display: flex;
     justify-content: center;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 button {
-    padding: 10px 20px;
+    padding: 12px 30px;
     font-size: 16px;
     font-weight: bold;
     border: none;
     background-color: #007bff;
     color: white;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
+/* Efeito de hover no botão */
 button:hover {
     background-color: #0056b3;
+    transform: translateY(-2px); /* Levanta o botão um pouco no hover */
+}
+
+button:active {
+    background-color: #004085;
+    transform: translateY(1px); /* Efeito de pressionamento do botão */
+}
+
+/* Adicionando um efeito sutil ao botão de foco */
+button:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
