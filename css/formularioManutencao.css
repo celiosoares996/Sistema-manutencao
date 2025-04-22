@@ -29,36 +29,8 @@ body {
     flex-direction: column;
 }
 
-/* Estilização dos campos do formulário */
-.input-box {
-    width: 100%;
-    margin-bottom: 15px; /* Espaçamento entre os campos */
-}
-
-.input-box label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 5px; /* Espaço entre label e input */
-}
-
-.input-box input, .input-box select, .input-box textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-/* Melhorando a textarea */
-.input-box textarea {
-    resize: none;
-}
-
-/* Estilização dos botões */
-.envio-buttom {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
+h2 {
+    margin-bottom: 20px;
 }
 
 button {
@@ -71,8 +43,28 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s ease;
+    margin: 5px;
 }
 
 button:hover {
     background-color: #0056b3;
+}
+
+.input-box {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.input-box label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
 }
