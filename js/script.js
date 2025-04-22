@@ -6,11 +6,22 @@ function formatarDados() {
     let diagnostico = document.getElementById("diagnostico").value;
     let reparo = document.getElementById("reparo").value;
 
-    let placaMae = document.getElementById("placaMae").value;
-    let processador = document.getElementById("processador").value;
-    let memoria1 = document.getElementById("memoria1").value;
-    let memoria2 = document.getElementById("memoria2").value;
-    let armazenamento = document.getElementById("armazenamento").value;
+    // Alteração para pegar modelo antes de numeração
+    let placaMaeModel = document.getElementById("placaMaeModel").value;
+    let placaMaeNum = document.getElementById("placaMaeNum").value;
+    
+    let processadorModel = document.getElementById("processadorModel").value;
+    let processadorNum = document.getElementById("processadorNum").value;
+    
+    let memoria1Model = document.getElementById("memoria1Model").value;
+    let memoria1Num = document.getElementById("memoria1Num").value;
+    
+    let memoria2Model = document.getElementById("memoria2Model").value;
+    let memoria2Num = document.getElementById("memoria2Num").value;
+    
+    let armazenamentoModel = document.getElementById("armazenamentoModel").value;
+    let armazenamentoNum = document.getElementById("armazenamentoNum").value;
+    
     let total = document.getElementById("total").value;
 
     let textoFormatado = `
@@ -26,11 +37,11 @@ Reparo: ${reparo}
 Status: Aguardando Autorização de Conclusão.
 
 Configuração atual: 
-Placa mãe: ${placaMae}  
-Processador: ${processador}  
-Memória: ${memoria1}  
-Memória: ${memoria2}  
-Armazenamento: ${armazenamento}  
+Placa mãe: ${placaMaeModel} - (${placaMaeNum})
+Processador: ${processadorModel} - (${processadorNum})
+Memória 1: ${memoria1Model} - (${memoria1Num})
+Memória 2: ${memoria2Model} - (${memoria2Num})
+Armazenamento: ${armazenamentoModel} - (${armazenamentoNum})
 
 Taxa de serviço: R$50,00  
 Total: R$${total}
@@ -47,3 +58,5 @@ Att,
         alert("Texto copiado para a área de transferência!");
     });
 }
+
+
