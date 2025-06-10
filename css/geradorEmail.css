@@ -158,3 +158,29 @@ button:focus {
         padding: 10px;
     }
 }
+
+.toast {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    padding: 16px 20px;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    font-size: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.5s, bottom 0.5s;
+}
+
+.toast.show {
+    visibility: visible;
+    opacity: 1;
+    bottom: 50px;
+}
+
