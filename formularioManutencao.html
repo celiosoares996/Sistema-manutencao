@@ -13,13 +13,13 @@
 
             <div class="input-box">
                 <label for="data">Data</label>
-                <input type="date" id="data" name="Data">
+                <input type="date" id="data" name="Data" required>
             </div>
 
             <div class="input-box">
                 <label for="equipamento">Equipamento</label>
-                <select id="equipamento" name="Equipamento">
-                    <option value=""></option>
+                <select id="equipamento" name="Equipamento" required>
+                    <option value="">Selecione</option>
                     <option value="Computador">Computador</option>
                     <option value="Monitor">Monitor</option>
                     <option value="Projetor">Projetor</option>
@@ -29,13 +29,13 @@
 
             <div class="input-box">
                 <label for="num_serie">Número de Série</label>
-                <input type="text" id="num_serie" name="Numero de série">
+                <input type="text" id="num_serie" name="Numero de série" required>
             </div>
 
             <div class="input-box">
                 <label for="unidade">Unidade</label>
-                <select id="unidade" name="Unidade">
-                    <option value=""></option>
+                <select id="unidade" name="Unidade" required>
+                    <option value="">Selecione</option>
                     <option value="DT">DT</option>
                     <option value="BS">BS</option>
                     <option value="PQL">PQL</option>
@@ -60,23 +60,23 @@
 
             <div class="input-box">
                 <label for="setor">Setor</label>
-                <input type="text" id="setor" name="Setor">
+                <input type="text" id="setor" name="Setor" required>
             </div>
 
             <div class="input-box">
                 <label for="responsavel">Responsável</label>
-                <input type="text" id="responsavel" name="Responsavel">
+                <input type="text" id="responsavel" name="Responsavel" required>
             </div>
 
             <div class="input-box">
                 <label for="realizacao">Realização</label>
-                <input type="text" id="realizacao" name="Realizacao">
+                <input type="text" id="realizacao" name="Realizacao" required>
             </div>
 
             <div class="input-box">
                 <label for="tecnico">Técnico</label>
-                <select id="tecnico" name="Técnico">
-                    <option value=""></option>
+                <select id="tecnico" name="Técnico" required>
+                    <option value="">Selecione</option>
                     <option value="Célio">Célio</option>
                     <option value="Gustavo">Gustavo</option>
                 </select>
@@ -84,18 +84,18 @@
 
             <div class="input-box">
                 <label for="entrada">Entrada</label>
-                <input type="time" id="entrada" name="Entrada">
+                <input type="time" id="entrada" name="Entrada" required>
             </div>
 
             <div class="input-box">
                 <label for="saida">Saída</label>
-                <input type="time" id="saida" name="Saída">
+                <input type="time" id="saida" name="Saída" required>
             </div>
 
             <div class="input-box">
                 <label for="conclusao">Conclusão</label>
-                <select id="conclusao" name="Conclusao">
-                    <option value=""></option>
+                <select id="conclusao" name="Conclusao" required>
+                    <option value="">Selecione</option>
                     <option value="Pronto">Pronto</option>
                     <option value="Pendente">Pendente</option>
                 </select>
@@ -103,7 +103,7 @@
 
             <div class="input-box">
                 <label for="descricao">Descrição do Serviço</label>
-                <textarea id="descricao" name="Descricao" placeholder="Digite o que foi realizado" rows="7" cols="40"></textarea>
+                <textarea id="descricao" name="Descricao" placeholder="Digite o que foi realizado" rows="7" cols="40" required></textarea>
             </div>
 
             <div class="envio-buttom">
@@ -112,5 +112,4 @@
         </form>
     </div>
 </body>
-
 </html>
