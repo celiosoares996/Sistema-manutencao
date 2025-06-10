@@ -6,7 +6,6 @@ function formatarDados() {
     let diagnostico = document.getElementById("diagnostico").value;
     let reparo = document.getElementById("reparo").value;
 
-    // Alteração para pegar modelo antes de numeração
     let placaMaeModel = document.getElementById("placaMaeModel").value;
     let placaMaeNum = document.getElementById("placaMaeNum").value;
     
@@ -49,14 +48,20 @@ Total: R$${total}
 Att,
 `;
 
-    // Exibir o texto formatado na tela
-    let resultado = document.getElementById("resultado");
-    resultado.innerText = textoFormatado;
+    document.getElementById("resultado").innerText = textoFormatado;
 
-    // Copiar automaticamente para a área de transferência
     navigator.clipboard.writeText(textoFormatado).then(() => {
-        alert("Texto copiado para a área de transferência!");
+        mostrarToast("Texto copiado para a área de transferência!");
     });
 }
 
+// Função para exibir toast
+function mostrarToast(mensagem) {
+    const toast = document.getElementById("toast");
+    toast.textContent = mensagem;
+    toast.classList.add("show");
 
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3000); // some após 3 segundos
+}
