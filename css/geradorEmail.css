@@ -15,6 +15,7 @@ body {
     align-items: center;
     background-color: #f5f5f5;
     font-size: 16px;
+    padding: 20px; /* garante espaçamento lateral em telas pequenas */
 }
 
 .container {
@@ -22,38 +23,36 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: 600px; /* Aumentei o limite para dar mais espaço ao formulário */
+    max-width: 600px;
     background: white;
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1); /* Sombra mais suave e difusa */
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
     flex-direction: column;
-    transition: transform 0.3s ease;
-}
-
-.container:hover {
-    transform: scale(1.02); /* Adiciona um efeito sutil de zoom */
+    /* Removido o hover/zoom para evitar efeito em dispositivos mobile */
 }
 
 /* Estilização dos campos do formulário */
 .input-box {
     width: 100%;
-    margin-bottom: 20px; /* Espaçamento geral entre os campos */
+    margin-bottom: 20px;
 }
 
 .input-box:first-child {
-    margin-bottom: 30px; /* Maior espaçamento para o primeiro input (Tombamento) */
+    margin-bottom: 30px;
 }
 
 .input-box label {
     display: block;
     font-weight: 600;
-    margin-bottom: 8px; /* Maior espaço entre o label e o input */
+    margin-bottom: 8px;
     color: #333;
     font-size: 14px;
 }
 
-.input-box input, .input-box select, .input-box textarea {
+.input-box input,
+.input-box select,
+.input-box textarea {
     width: 100%;
     padding: 12px;
     border: 1px solid #ccc;
@@ -62,23 +61,25 @@ body {
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Estilização do foco do input */
-.input-box input:focus, .input-box select:focus, .input-box textarea:focus {
+/* Foco */
+.input-box input:focus,
+.input-box select:focus,
+.input-box textarea:focus {
     border-color: #007bff;
     box-shadow: 0 0 10px rgba(0, 123, 255, 0.2);
     outline: none;
 }
 
-/* Melhorando a textarea */
+/* Textarea */
 .input-box textarea {
     resize: none;
-    min-height: 100px; /* Definindo uma altura mínima para a textarea */
+    min-height: 100px;
 }
 
-/* Estilização dos campos inline */
+/* Campos em linha (opcional) */
 .input-inline {
     display: flex;
-    gap: 15px; /* Adiciona espaço entre os campos inline */
+    gap: 15px;
     width: 100%;
 }
 
@@ -90,7 +91,7 @@ body {
     font-size: 16px;
 }
 
-/* Estilização dos botões */
+/* Botões */
 .envio-buttom {
     display: flex;
     justify-content: center;
@@ -109,19 +110,51 @@ button {
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-/* Efeito de hover no botão */
 button:hover {
     background-color: #0056b3;
-    transform: translateY(-2px); /* Levanta o botão um pouco no hover */
+    transform: translateY(-2px);
 }
 
 button:active {
     background-color: #004085;
-    transform: translateY(1px); /* Efeito de pressionamento do botão */
+    transform: translateY(1px);
 }
 
-/* Adicionando um efeito sutil ao botão de foco */
 button:focus {
     outline: none;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 480px) {
+    body {
+        padding: 15px;
+    }
+
+    .container {
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+        font-size: 15px;
+    }
+
+    .input-inline {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .input-box label {
+        font-size: 13px;
+    }
+
+    .input-box input,
+    .input-box select,
+    .input-box textarea {
+        font-size: 15px;
+        padding: 10px;
+    }
 }
