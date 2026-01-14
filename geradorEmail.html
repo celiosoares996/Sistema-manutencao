@@ -53,7 +53,6 @@
         #lista-historico::-webkit-scrollbar { width: 4px; }
         #lista-historico::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         
-        /* Estilo para campos desabilitados */
         input:disabled, select:disabled {
             background-color: #f1f5f9 !important;
             color: #94a3b8 !important;
@@ -116,13 +115,13 @@
                     <hr class="border-slate-100">
 
                     <div id="section-hardware" class="space-y-4">
-                        <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">🛠 Hardware / Peças</h3>
+                        <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">🛠 Peças Solicitadas / Instaladas</h3>
                         
                         <div class="grid grid-cols-1 gap-4">
                             <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
                                 <div class="flex justify-between items-center mb-3">
                                     <span class="font-bold text-slate-700 text-xs uppercase">Placa Mãe</span>
-                                    <button type="button" onclick="toggleTroca('placaMae')" id="btn-placaMae" class="text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca (R$175)</button>
+                                    <button type="button" onclick="toggleTroca('placaMae')" id="btn-placaMae" class="hw-btn text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca (R$175)</button>
                                 </div>
                                 <div class="grid grid-cols-2 gap-3">
                                     <select id="placaMaeModel" class="hw-input px-3 py-2 rounded-lg border border-slate-300 text-sm outline-none bg-white">
@@ -140,7 +139,7 @@
                             <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
                                 <div class="flex justify-between items-center mb-3">
                                     <span class="font-bold text-slate-700 text-xs uppercase">Memória RAM</span>
-                                    <button type="button" onclick="toggleTroca('ram1')" id="btn-ram1" class="text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca (R$40)</button>
+                                    <button type="button" onclick="toggleTroca('ram1')" id="btn-ram1" class="hw-btn text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca (R$40)</button>
                                 </div>
                                 <div class="grid grid-cols-2 gap-3">
                                     <select id="ram1Model" class="hw-input px-3 py-2 rounded-lg border border-slate-300 text-sm outline-none bg-white">
@@ -157,7 +156,7 @@
                             <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
                                 <div class="flex justify-between items-center mb-3">
                                     <span class="font-bold text-slate-700 text-xs uppercase">Armazenamento</span>
-                                    <button type="button" onclick="toggleTroca('disco')" id="btn-disco" class="text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca (R$110)</button>
+                                    <button type="button" onclick="toggleTroca('disco')" id="btn-disco" class="hw-btn text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca (R$110)</button>
                                 </div>
                                 <div class="grid grid-cols-2 gap-3">
                                     <select id="discoModel" class="hw-input px-3 py-2 rounded-lg border border-slate-300 text-sm outline-none bg-white">
@@ -175,7 +174,7 @@
 
                     <div class="flex flex-col md:flex-row items-end justify-between pt-6 border-t border-slate-100 gap-4">
                         <div class="w-full md:w-1/4 text-center">
-                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Total</label>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Total Estimado</label>
                             <input type="text" id="totalDisplay" class="w-full bg-transparent text-indigo-600 font-bold text-2xl outline-none text-center" readonly value="50,00">
                         </div>
                         <div class="w-full md:w-3/4">
@@ -218,7 +217,7 @@
 
     <script>
         const PRECOS = { placaMae: 175, ram1: 40, disco: 110, taxa: 50 };
-        let bd_laudos = JSON.parse(localStorage.getItem('lab_historico_final')) || [];
+        let bd_laudos = JSON.parse(localStorage.getItem('lab_historico_upgrade')) || [];
 
         function toggleUpgradeMode() {
             const isUpgrade = document.getElementById('modeUpgrade').checked;
@@ -226,9 +225,9 @@
             const rep = document.getElementById('reparo');
             const btnText = document.getElementById('btnMainText');
             
-            // Seleciona todos os inputs de Hardware e botões de troca
+            // Elementos de Hardware
             const hwInputs = document.querySelectorAll('.hw-input');
-            const hwButtons = document.querySelectorAll('#section-hardware button');
+            const hwButtons = document.querySelectorAll('.hw-btn');
 
             if(isUpgrade) {
                 diag.value = "AGUARDANDO PEÇAS (MODO UPGRADE)";
@@ -237,11 +236,11 @@
                 rep.disabled = true;
                 btnText.innerText = "Gerar Aguardo de Peças";
 
-                // Trava Hardware
+                // Bloqueia todos os campos e botões de Hardware
                 hwInputs.forEach(input => input.disabled = true);
                 hwButtons.forEach(btn => {
                     btn.disabled = true;
-                    btn.classList.add('opacity-50', 'cursor-not-allowed');
+                    btn.classList.add('opacity-40', 'cursor-not-allowed');
                 });
             } else {
                 diag.value = "";
@@ -250,11 +249,11 @@
                 rep.disabled = false;
                 btnText.innerText = "Gerar, Copiar e Salvar";
 
-                // Destrava Hardware
+                // Desbloqueia todos
                 hwInputs.forEach(input => input.disabled = false);
                 hwButtons.forEach(btn => {
                     btn.disabled = false;
-                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    btn.classList.remove('opacity-40', 'cursor-not-allowed');
                 });
             }
         }
@@ -269,8 +268,8 @@
             
             btn.innerText = isHidden ? "Remover" : `+ Troca (R$${PRECOS[id]})`;
             btn.className = isHidden ? 
-                "text-[10px] font-bold px-3 py-1 rounded-full bg-red-500 text-white" : 
-                "text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600";
+                "hw-btn text-[10px] font-bold px-3 py-1 rounded-full bg-red-500 text-white" : 
+                "hw-btn text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600";
             
             atualizarTotal();
         }
@@ -313,7 +312,7 @@
             const hardware = getHardwareInfo();
             const totalStr = atualizarTotal();
             
-            const email = `Darkson,\n\nSegue o diagnóstico da máquina:\n\n${tomb} - ${document.getElementById('setor').value} - ${document.getElementById('sede').value}\n\nDefeito: ${document.getElementById('defeito').value}\nDiagnóstico: ${document.getElementById('diagnostico').value}\nReparo: ${document.getElementById('reparo').value}\n\nConfiguração Sugerida:\n${hardware.sugerido}\nTotal: R$ ${totalStr}\n\nAtt,`;
+            const email = `Prezados,\n\nSegue o diagnóstico técnico:\n\n${tomb} - ${document.getElementById('setor').value} - ${document.getElementById('sede').value}\n\nDefeito: ${document.getElementById('defeito').value}\nDiagnóstico: ${document.getElementById('diagnostico').value}\nReparo: ${document.getElementById('reparo').value}\n\nHardware Sugerido:\n${hardware.sugerido}\nTotal Estimado: R$ ${totalStr}\n\nAtt,`;
 
             document.getElementById("resultado").innerText = email;
             document.getElementById("resultado-container").classList.remove('hidden');
@@ -334,10 +333,9 @@
                 selecionado: true
             });
 
-            localStorage.setItem('lab_historico_final', JSON.stringify(bd_laudos));
+            localStorage.setItem('lab_historico_upgrade', JSON.stringify(bd_laudos));
             atualizarLista();
             mostrarToast(isUpgrade ? "⚠️ Aguardo de Peças Salvo!" : "📋 E-mail copiado e salvo!");
-            document.getElementById('tombamento').value = "";
         }
 
         function atualizarLista() {
@@ -360,13 +358,13 @@
 
         function toggleCheck(idx) {
             bd_laudos[idx].selecionado = !bd_laudos[idx].selecionado;
-            localStorage.setItem('lab_historico_final', JSON.stringify(bd_laudos));
+            localStorage.setItem('lab_historico_upgrade', JSON.stringify(bd_laudos));
         }
 
         function deletar(idx) {
             if(confirm("Excluir registro?")) {
                 bd_laudos.splice(idx, 1);
-                localStorage.setItem('lab_historico_final', JSON.stringify(bd_laudos));
+                localStorage.setItem('lab_historico_upgrade', JSON.stringify(bd_laudos));
                 atualizarLista();
             }
         }
@@ -374,7 +372,7 @@
         function limparTudo() {
             if(confirm("Deseja apagar TODO o histórico?")) {
                 bd_laudos = [];
-                localStorage.setItem('lab_historico_final', JSON.stringify(bd_laudos));
+                localStorage.setItem('lab_historico_upgrade', JSON.stringify(bd_laudos));
                 atualizarLista();
             }
         }
@@ -392,9 +390,9 @@
                     <p><strong>DEFEITO:</strong> ${l.defeito}</p>
                     <p><strong>DIAGNÓSTICO:</strong> ${l.diagnostico}</p>
                     <div class="mt-2 border-t border-black pt-1">
-                        <p class="font-bold">CONFIGURAÇÃO / PEÇAS:</p>
+                        <p class="font-bold uppercase text-[8px]">Hardware / Configuração:</p>
                         <pre class="config-text" style="font-family: inherit; white-space: pre-wrap;">${l.configFinal}</pre>
-                        <p class="mt-1 font-bold text-right">VALOR: R$ ${l.total}</p>
+                        <p class="mt-1 font-bold text-right">TOTAL: R$ ${l.total}</p>
                     </div>
                 </div>
             `).join('');
