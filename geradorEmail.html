@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Manutenção & Upgrade Pro</title>
+    <title>Gerador de Manutenção Ultra-Rápido</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -11,77 +11,40 @@
         .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
         
         @media print {
-            body { background: white !important; padding: 0 !important; margin: 0 !important; }
+            body { background: white !important; padding: 0 !important; }
             .no-print { display: none !important; }
             #print-area { 
                 display: grid !important; 
-                grid-template-columns: 1fr 1fr; 
+                grid-template-columns: 1fr 1fr;
                 gap: 15px;
-                padding: 10mm;
+                padding: 10px;
             }
             .print-card {
-                border: 1px solid #000 !important;
-                padding: 10px !important;
-                font-size: 10px !important;
+                border: 2px solid black !important;
+                padding: 15px !important;
+                font-size: 12px !important;
                 page-break-inside: avoid;
-                display: flex;
-                flex-direction: column;
-                background: white !important;
-                position: relative;
+                border-radius: 8px;
             }
-            .print-card h2 { 
-                font-size: 12px !important; 
-                border-bottom: 1px solid black; 
-                margin-bottom: 4px; 
-                padding-bottom: 2px;
-            }
-            .upgrade-label {
-                position: absolute;
-                top: 5px;
-                right: 5px;
-                border: 1px solid black;
-                padding: 2px 4px;
-                font-weight: bold;
-                font-size: 8px;
-                background: #eee;
-            }
-            .print-card p { margin-bottom: 2px; }
-            .config-text { font-size: 9px !important; line-height: 1.1; }
+            .print-card h2 { font-size: 16px !important; border-bottom: 2px solid black; margin-bottom: 8px; padding-bottom: 4px; }
         }
-
         #print-area { display: none; }
-        #lista-historico::-webkit-scrollbar { width: 4px; }
-        #lista-historico::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        
-        input:disabled, select:disabled {
-            background-color: #f1f5f9 !important;
-            color: #94a3b8 !important;
-            cursor: not-allowed;
-            border-color: #e2e8f0 !important;
-        }
+        .disabled-section { opacity: 0.3; pointer-events: none; filter: grayscale(1); }
     </style>
 </head>
 <body class="bg-slate-100 min-h-screen py-8 px-4">
 
     <div class="max-w-6xl mx-auto no-print text-center mb-10">
         <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">Gerador de Manutenção</h1>
-        <p class="text-slate-500 mt-2">Controle de manutenções e aguardo de peças (Upgrade).</p>
+        <p class="text-slate-500 mt-2">Gere o e-mail e a máquina será salva automaticamente para impressão.</p>
     </div>
 
     <div class="max-w-6xl mx-auto no-print grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
         
         <div class="lg:col-span-3">
             <div class="bg-white rounded-3xl card-shadow overflow-hidden border border-slate-200">
-                <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
-                    <h2 class="font-bold text-slate-700 uppercase text-xs tracking-wider">Novo Registro</h2>
-                    <label class="inline-flex items-center cursor-pointer">
-                        <span class="mr-3 text-xs font-bold text-orange-600">MODO UPGRADE?</span>
-                        <input type="checkbox" id="modeUpgrade" class="sr-only peer" onchange="toggleUpgradeMode()">
-                        <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500"></div>
-                    </label>
-                </div>
-
                 <form id="formulario" class="p-6 md:p-10 space-y-8">
+                    
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="space-y-2">
                             <label class="text-sm font-bold text-slate-700">Tombamento Máquina</label>
@@ -114,72 +77,79 @@
 
                     <hr class="border-slate-100">
 
-                    <div id="section-hardware" class="space-y-4">
-                        <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">🛠 Peças Solicitadas / Instaladas</h3>
+                    <div id="hardware-section" class="space-y-4 transition-all duration-500">
+                        <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">🛠 Configuração de Hardware</h3>
                         
-                        <div class="grid grid-cols-1 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
                                 <div class="flex justify-between items-center mb-3">
                                     <span class="font-bold text-slate-700 text-xs uppercase">Placa Mãe</span>
-                                    <button type="button" onclick="toggleTroca('placaMae')" id="btn-placaMae" class="hw-btn text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca (R$175)</button>
+                                    <button type="button" onclick="toggleTroca('placaMae')" id="btn-placaMae" class="text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca</button>
                                 </div>
-                                <div class="grid grid-cols-2 gap-3">
-                                    <select id="placaMaeModel" class="hw-input px-3 py-2 rounded-lg border border-slate-300 text-sm outline-none bg-white">
-                                        <option value="">Selecione...</option>
-                                        <option>GT H61 LGA 1155</option><option>Asus H61M-K</option><option>Asus H81M-E</option>
-                                    </select>
-                                    <input type="text" id="placaMaeNum" placeholder="Tombamento" class="hw-input px-3 py-2 rounded-lg border border-slate-300 text-sm outline-none">
+                                <select id="placaMaeModel" onchange="atualizarTotalNaTela()" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm mb-2">
+                                    <option value="Mantida">Mantida</option>
+                                    <option>GT H61 LGA 1155</option>
+                                    <option>Asus H61M-K LGA 1155</option>
+                                    <option>GA-H110M-M2 LGA 1151</option>
+                                </select>
+                                <div id="troca-placaMae" class="hidden"><input type="text" id="placaMaeNum" placeholder="Novo Tombamento" class="w-full px-3 py-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm"></div>
+                            </div>
+
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="font-bold text-slate-700 text-xs uppercase">CPU</span>
+                                    <button type="button" onclick="toggleTroca('cpu')" id="btn-cpu" class="text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca</button>
                                 </div>
-                                <div id="troca-placaMae" class="hidden mt-3 pt-3 border-t border-dashed border-slate-300 grid grid-cols-2 gap-3">
-                                    <input type="text" id="placaMaeModelNovo" placeholder="Nova Placa" class="hw-input px-3 py-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm outline-none">
-                                    <input type="text" id="placaMaeNumNovo" placeholder="Novo Tomb." class="hw-input px-3 py-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm outline-none">
-                                </div>
+                                <select id="cpuModel" onchange="atualizarTotalNaTela()" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm">
+                                    <option value="Mantido">Mantido</option>
+                                    <option>Intel i3-3220</option>
+                                    <option>Intel i5-3470</option>
+                                    <option>Intel i5-7400</option>
+                                </select>
+                                <div id="troca-cpu" class="hidden mt-2"><input type="text" placeholder="Série/Info" class="w-full px-3 py-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm"></div>
                             </div>
 
                             <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
                                 <div class="flex justify-between items-center mb-3">
                                     <span class="font-bold text-slate-700 text-xs uppercase">Memória RAM</span>
-                                    <button type="button" onclick="toggleTroca('ram1')" id="btn-ram1" class="hw-btn text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca (R$40)</button>
+                                    <button type="button" onclick="toggleTroca('ram')" id="btn-ram" class="text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca</button>
                                 </div>
-                                <div class="grid grid-cols-2 gap-3">
-                                    <select id="ram1Model" class="hw-input px-3 py-2 rounded-lg border border-slate-300 text-sm outline-none bg-white">
-                                        <option value="">Selecione...</option>
-                                        <option>4GB DDR3</option><option>8GB DDR3</option><option>8GB DDR4</option>
-                                    </select>
-                                    <input type="text" id="ram1Num" placeholder="Tombamento" class="hw-input px-3 py-2 rounded-lg border border-slate-300 text-sm outline-none">
-                                </div>
-                                <div id="troca-ram1" class="hidden mt-3 pt-3 border-t border-dashed border-slate-300">
-                                    <input type="text" id="ram1ModelNovo" placeholder="Nova Memória" class="hw-input w-full px-3 py-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm outline-none">
-                                </div>
+                                <select id="ramModel" onchange="atualizarTotalNaTela()" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm">
+                                    <option value="Mantida">Mantida</option>
+                                    <option>4GB DDR3 1600Mhz</option>
+                                    <option>8GB DDR3 1600Mhz</option>
+                                    <option>8GB DDR4 2666Mhz</option>
+                                </select>
+                                <div id="troca-ram" class="hidden mt-2"><input type="text" placeholder="Nº de Série" class="w-full px-3 py-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm"></div>
                             </div>
 
                             <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
                                 <div class="flex justify-between items-center mb-3">
                                     <span class="font-bold text-slate-700 text-xs uppercase">Armazenamento</span>
-                                    <button type="button" onclick="toggleTroca('disco')" id="btn-disco" class="hw-btn text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca (R$110)</button>
+                                    <button type="button" onclick="toggleTroca('disco')" id="btn-disco" class="text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca</button>
                                 </div>
-                                <div class="grid grid-cols-2 gap-3">
-                                    <select id="discoModel" class="hw-input px-3 py-2 rounded-lg border border-slate-300 text-sm outline-none bg-white">
-                                        <option value="">Selecione...</option>
-                                        <option>HD 500GB</option><option>SSD 240GB</option><option>SSD 480GB</option>
-                                    </select>
-                                    <input type="text" id="discoNum" placeholder="Tombamento" class="hw-input px-3 py-2 rounded-lg border border-slate-300 text-sm outline-none">
-                                </div>
-                                <div id="troca-disco" class="hidden mt-3 pt-3 border-t border-dashed border-slate-300">
-                                    <input type="text" id="discoModelNovo" placeholder="Novo SSD/HD" class="hw-input w-full px-3 py-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm outline-none">
-                                </div>
+                                <select id="discoModel" onchange="atualizarTotalNaTela()" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm">
+                                    <option value="Mantido">Mantido</option>
+                                    <option>SSD 240GB Kingston</option>
+                                    <option>SSD 480GB Kingston</option>
+                                    <option>HD 500GB Sata</option>
+                                </select>
+                                <div id="troca-disco" class="hidden mt-2"><input type="text" placeholder="Novo Tombamento" class="w-full px-3 py-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm"></div>
                             </div>
                         </div>
                     </div>
 
                     <div class="flex flex-col md:flex-row items-end justify-between pt-6 border-t border-slate-100 gap-4">
-                        <div class="w-full md:w-1/4 text-center">
-                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Total Estimado</label>
-                            <input type="text" id="totalDisplay" class="w-full bg-transparent text-indigo-600 font-bold text-2xl outline-none text-center" readonly value="50,00">
+                        <div class="w-full md:w-1/4">
+                            <label class="block text-sm font-bold text-slate-700 mb-1 text-center">Total (R$)</label>
+                            <input type="text" id="totalDisplay" class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 text-indigo-600 font-bold text-xl outline-none text-center" readonly value="50,00">
                         </div>
-                        <div class="w-full md:w-3/4">
-                            <button type="button" onclick="formatarDados()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold h-[55px] rounded-2xl shadow-lg transition-all active:scale-95 text-lg">
-                                <span id="btnMainText">Gerar, Copiar e Salvar</span>
+                        <div class="w-full md:w-3/4 flex flex-wrap gap-2">
+                            <button type="button" onclick="aguardandoPeca()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold h-[52px] rounded-2xl shadow-lg transition-all active:scale-95 text-sm">
+                                ⚠️ Aguardando Peça
+                            </button>
+                            <button type="button" onclick="formatarDados()" class="flex-[2] bg-indigo-600 hover:bg-indigo-700 text-white font-bold h-[52px] rounded-2xl shadow-lg transition-all active:scale-95 text-sm">
+                                Gerar, Copiar e Salvar
                             </button>
                         </div>
                     </div>
@@ -187,7 +157,7 @@
             </div>
             
             <div id="resultado-container" class="hidden mt-10">
-                <h3 class="text-slate-800 font-bold mb-4">✅ Texto Gerado</h3>
+                <h3 class="text-slate-800 font-bold mb-4">✅ Texto do E-mail</h3>
                 <div class="bg-slate-900 rounded-3xl p-8 shadow-2xl">
                     <pre id="resultado" class="text-indigo-100 text-sm whitespace-pre-wrap leading-relaxed"></pre>
                 </div>
@@ -195,205 +165,165 @@
         </div>
 
         <div class="lg:col-span-1">
-            <div class="bg-white rounded-3xl card-shadow border border-slate-200 p-5 sticky top-8 flex flex-col h-[85vh]">
+            <div class="bg-white rounded-3xl card-shadow border border-slate-200 p-5 sticky top-8 flex flex-col max-h-[90vh]">
                 <div class="flex justify-between items-center mb-4 border-b pb-2">
                     <h3 class="font-bold text-slate-800">Histórico</h3>
-                    <button onclick="limparTudo()" class="text-[10px] text-red-500 font-bold hover:underline">Limpar</button>
+                    <button onclick="limparTudo()" class="text-[10px] text-red-500 font-bold uppercase hover:underline">Limpar</button>
+                </div>
+
+                <div class="mb-4 p-2 bg-slate-50 rounded-lg border border-slate-200">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" id="modoImpressaoRapida" onchange="toggleModoImpressao(this)" class="w-4 h-4 text-indigo-600">
+                        <span class="text-[10px] font-bold text-slate-600 uppercase">Ocultar Hardware</span>
+                    </label>
                 </div>
                 
-                <div id="lista-historico" class="space-y-3 overflow-y-auto pr-2 mb-6 flex-grow"></div>
+                <div id="lista-historico" class="space-y-3 overflow-y-auto pr-2 mb-6 flex-grow">
+                    <p class="text-xs text-slate-400 text-center py-4">Nenhum laudo salvo.</p>
+                </div>
 
-                <button onclick="imprimirLote()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
-                    🖨️ Imprimir em Lote
+                <button onclick="imprimirLote()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-sm shrink-0">
+                    <span>🖨️</span> Imprimir Selecionados
                 </button>
             </div>
         </div>
     </div>
 
     <div id="print-area"></div>
-    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-emerald-600 text-white px-8 py-3 rounded-full shadow-2xl opacity-0 transition-all duration-500 z-50">
-        📋 Copiado e Salvo!
-    </div>
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-emerald-600 text-white px-8 py-3 rounded-full shadow-2xl opacity-0 transition-all duration-500 z-50">📋 Copiado!</div>
 
     <script>
-        const PRECOS = { placaMae: 175, ram1: 40, disco: 110, taxa: 50 };
-        let bd_laudos = JSON.parse(localStorage.getItem('lab_historico_upgrade')) || [];
+        const PRECOS = { placaMae: 175, cpu: 50, ram: 40, disco: 110, taxa: 50 };
+        let bd_laudos = JSON.parse(localStorage.getItem('meus_laudos')) || [];
 
-        function toggleUpgradeMode() {
-            const isUpgrade = document.getElementById('modeUpgrade').checked;
-            const diag = document.getElementById('diagnostico');
-            const rep = document.getElementById('reparo');
-            const btnText = document.getElementById('btnMainText');
-            
-            // Elementos de Hardware
-            const hwInputs = document.querySelectorAll('.hw-input');
-            const hwButtons = document.querySelectorAll('.hw-btn');
+        function aguardandoPeca() {
+            document.getElementById('defeito').value = "AGUARDANDO PEÇA";
+            document.getElementById('diagnostico').value = "AGUARDANDO PEÇA";
+            document.getElementById('reparo').value = "AGUARDANDO PEÇA";
+            mostrarToast("⚠️ Definido como Aguardando Peça");
+        }
 
-            if(isUpgrade) {
-                diag.value = "AGUARDANDO PEÇAS (MODO UPGRADE)";
-                rep.value = "AGUARDANDO PEÇAS PARA INSTALAÇÃO";
-                diag.disabled = true;
-                rep.disabled = true;
-                btnText.innerText = "Gerar Aguardo de Peças";
-
-                // Bloqueia todos os campos e botões de Hardware
-                hwInputs.forEach(input => input.disabled = true);
-                hwButtons.forEach(btn => {
-                    btn.disabled = true;
-                    btn.classList.add('opacity-40', 'cursor-not-allowed');
-                });
-            } else {
-                diag.value = "";
-                rep.value = "";
-                diag.disabled = false;
-                rep.disabled = false;
-                btnText.innerText = "Gerar, Copiar e Salvar";
-
-                // Desbloqueia todos
-                hwInputs.forEach(input => input.disabled = false);
-                hwButtons.forEach(btn => {
-                    btn.disabled = false;
-                    btn.classList.remove('opacity-40', 'cursor-not-allowed');
-                });
-            }
+        function toggleModoImpressao(checkbox) {
+            const section = document.getElementById('hardware-section');
+            section.classList.toggle('disabled-section', checkbox.checked);
         }
 
         function toggleTroca(id) {
-            if(document.getElementById('modeUpgrade').checked) return;
-
             const section = document.getElementById(`troca-${id}`);
             const btn = document.getElementById(`btn-${id}`);
-            const isHidden = section.classList.contains('hidden');
-            section.classList.toggle('hidden');
+            const isHidden = section.classList.toggle('hidden');
             
-            btn.innerText = isHidden ? "Remover" : `+ Troca (R$${PRECOS[id]})`;
-            btn.className = isHidden ? 
-                "hw-btn text-[10px] font-bold px-3 py-1 rounded-full bg-red-500 text-white" : 
-                "hw-btn text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600";
+            btn.innerText = isHidden ? "+ Troca" : "Remover";
+            btn.className = isHidden 
+                ? "text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600" 
+                : "text-[10px] font-bold px-3 py-1 rounded-full bg-red-500 text-white";
             
-            atualizarTotal();
+            atualizarTotalNaTela();
         }
 
-        function atualizarTotal() {
+        function atualizarTotalNaTela() {
             let total = PRECOS.taxa;
-            if(!document.getElementById('troca-placaMae').classList.contains('hidden')) total += PRECOS.placaMae;
-            if(!document.getElementById('troca-ram1').classList.contains('hidden')) total += PRECOS.ram1;
-            if(!document.getElementById('troca-disco').classList.contains('hidden')) total += PRECOS.disco;
-            
-            const formatted = total.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-            document.getElementById('totalDisplay').value = formatted;
-            return formatted;
+            ['placaMae', 'cpu', 'ram', 'disco'].forEach(id => {
+                const section = document.getElementById(`troca-${id}`);
+                if (section && !section.classList.contains('hidden')) {
+                    total += PRECOS[id];
+                }
+            });
+            const totalFormatado = total.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+            document.getElementById('totalDisplay').value = totalFormatado;
+            return totalFormatado;
         }
 
         function getHardwareInfo() {
-            const items = [
-                {label: "Placa Mãe", id: "placaMae"},
-                {label: "RAM", id: "ram1"},
-                {label: "Disco", id: "disco"}
-            ];
-            let sugerido = "";
-            items.forEach(i => {
-                const mA = document.getElementById(`${i.id}Model`).value || "Original";
-                if(!document.getElementById(`troca-${i.id}`).classList.contains('hidden')) {
-                    const mN = document.getElementById(`${i.id}ModelNovo`).value || "Pendente";
-                    sugerido += `• ${i.label}: ${mN} *SOLICITADO*\n`;
-                } else {
-                    sugerido += `• ${i.label}: ${mA}\n`;
-                }
+            let info = "";
+            ['placaMae', 'cpu', 'ram', 'disco'].forEach(id => {
+                const mod = document.getElementById(`${id}Model`).value;
+                const section = document.getElementById(`troca-${id}`);
+                const status = section.classList.contains('hidden') ? "(Mantido)" : "(Trocado)";
+                info += `• ${id.toUpperCase()}: ${mod} ${status}\n`;
             });
-            return { sugerido };
+            return info;
         }
 
         function formatarDados() {
             const tomb = document.getElementById('tombamento').value;
-            if(!tomb) return alert("Digite o tombamento!");
+            if(!tomb) { alert("Digite o tombamento!"); return; }
 
-            const isUpgrade = document.getElementById('modeUpgrade').checked;
             const hardware = getHardwareInfo();
-            const totalStr = atualizarTotal();
+            const totalStr = atualizarTotalNaTela();
             
-            const email = `Prezados,\n\nSegue o diagnóstico técnico:\n\n${tomb} - ${document.getElementById('setor').value} - ${document.getElementById('sede').value}\n\nDefeito: ${document.getElementById('defeito').value}\nDiagnóstico: ${document.getElementById('diagnostico').value}\nReparo: ${document.getElementById('reparo').value}\n\nHardware Sugerido:\n${hardware.sugerido}\nTotal Estimado: R$ ${totalStr}\n\nAtt,`;
+            const email = `Darkson,\n\nSegue o diagnóstico da máquina:\n\n💻 ${tomb} - ${document.getElementById('setor').value} - ${document.getElementById('sede').value}\n\n❌ Defeito: ${document.getElementById('defeito').value}\n🔍 Diagnóstico: ${document.getElementById('diagnostico').value}\n🛠 Reparo: ${document.getElementById('reparo').value}\n\n⚙️ Configuração Sugerida:\n${hardware}\n💰 Valor Total: R$ ${totalStr}\n\nAtt,`;
 
             document.getElementById("resultado").innerText = email;
             document.getElementById("resultado-container").classList.remove('hidden');
             navigator.clipboard.writeText(email);
 
-            bd_laudos.unshift({
+            const novoLaudo = {
                 id: Date.now(),
-                tipo: isUpgrade ? 'UPGRADE' : 'MANUTENÇÃO',
                 tombamento: tomb,
-                setor: document.getElementById('setor').value || "Não informado",
-                sede: document.getElementById('sede').value || "---",
-                defeito: document.getElementById('defeito').value || "---",
+                setor: document.getElementById('setor').value,
+                sede: document.getElementById('sede').value,
+                defeito: document.getElementById('defeito').value,
                 diagnostico: document.getElementById('diagnostico').value,
                 reparo: document.getElementById('reparo').value,
-                configFinal: hardware.sugerido,
                 total: totalStr,
                 data: new Date().toLocaleDateString('pt-BR'),
                 selecionado: true
-            });
+            };
 
-            localStorage.setItem('lab_historico_upgrade', JSON.stringify(bd_laudos));
-            atualizarLista();
-            mostrarToast(isUpgrade ? "⚠️ Aguardo de Peças Salvo!" : "📋 E-mail copiado e salvo!");
+            bd_laudos.unshift(novoLaudo);
+            localStorage.setItem('meus_laudos', JSON.stringify(bd_laudos));
+            atualizarListaNaTela();
+            mostrarToast("📋 Gerado e Salvo!");
         }
 
-        function atualizarLista() {
+        function atualizarListaNaTela() {
             const container = document.getElementById('lista-historico');
             if(bd_laudos.length === 0) {
-                container.innerHTML = `<p class="text-[10px] text-slate-400 text-center py-4">Vazio</p>`;
+                container.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">Vazio</p>`;
                 return;
             }
             container.innerHTML = bd_laudos.map((l, idx) => `
-                <div class="flex items-center gap-3 p-3 rounded-xl border ${l.tipo === 'UPGRADE' ? 'bg-orange-50 border-orange-200' : 'bg-slate-50 border-slate-200'} group">
-                    <input type="checkbox" ${l.selecionado ? 'checked' : ''} onchange="toggleCheck(${idx})" class="w-4 h-4 cursor-pointer">
+                <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-200 group">
+                    <input type="checkbox" ${l.selecionado ? 'checked' : ''} onchange="toggleCheck(${idx})" class="w-4 h-4 rounded text-indigo-600">
                     <div class="flex-1 min-w-0">
-                        <p class="text-xs font-bold text-slate-700 truncate">${l.tombamento} ${l.tipo === 'UPGRADE' ? '⚠️' : ''}</p>
-                        <p class="text-[10px] text-slate-500">${l.setor}</p>
+                        <p class="text-xs font-bold text-slate-700 truncate">${l.tombamento}</p>
+                        <p class="text-[9px] text-slate-500 uppercase truncate">${l.diagnostico}</p>
                     </div>
-                    <button onclick="deletar(${idx})" class="opacity-0 group-hover:opacity-100 text-red-400 hover:scale-110 transition-all">✕</button>
+                    <button onclick="deletarItem(${idx})" class="text-red-400 hover:text-red-600">✕</button>
                 </div>
             `).join('');
         }
 
         function toggleCheck(idx) {
             bd_laudos[idx].selecionado = !bd_laudos[idx].selecionado;
-            localStorage.setItem('lab_historico_upgrade', JSON.stringify(bd_laudos));
+            localStorage.setItem('meus_laudos', JSON.stringify(bd_laudos));
         }
 
-        function deletar(idx) {
-            if(confirm("Excluir registro?")) {
-                bd_laudos.splice(idx, 1);
-                localStorage.setItem('lab_historico_upgrade', JSON.stringify(bd_laudos));
-                atualizarLista();
-            }
+        function deletarItem(idx) {
+            bd_laudos.splice(idx, 1);
+            localStorage.setItem('meus_laudos', JSON.stringify(bd_laudos));
+            atualizarListaNaTela();
         }
 
         function limparTudo() {
-            if(confirm("Deseja apagar TODO o histórico?")) {
-                bd_laudos = [];
-                localStorage.setItem('lab_historico_upgrade', JSON.stringify(bd_laudos));
-                atualizarLista();
-            }
+            if(confirm("Limpar histórico?")) { bd_laudos = []; localStorage.removeItem('meus_laudos'); atualizarListaNaTela(); }
         }
 
         function imprimirLote() {
             const selecionados = bd_laudos.filter(l => l.selecionado);
-            if(selecionados.length === 0) return alert("Selecione itens na lista lateral!");
-
+            if(selecionados.length === 0) { alert("Selecione um laudo!"); return; }
             const printArea = document.getElementById('print-area');
             printArea.innerHTML = selecionados.map(l => `
                 <div class="print-card">
-                    ${l.tipo === 'UPGRADE' ? '<div class="upgrade-label">AGUARDANDO PEÇAS</div>' : ''}
-                    <h2 class="font-black uppercase">${l.tipo}: ${l.tombamento}</h2>
-                    <p><strong>DATA:</strong> ${l.data} | <strong>SETOR:</strong> ${l.setor}</p>
+                    <h2 class="font-black">LAUDO TÉCNICO: ${l.tombamento}</h2>
+                    <p><strong>DATA:</strong> ${l.data}</p>
+                    <p><strong>LOCAL:</strong> ${l.setor} (${l.sede})</p>
+                    <hr style="margin: 8px 0; border: 0; border-top: 1px dashed #000;">
                     <p><strong>DEFEITO:</strong> ${l.defeito}</p>
                     <p><strong>DIAGNÓSTICO:</strong> ${l.diagnostico}</p>
-                    <div class="mt-2 border-t border-black pt-1">
-                        <p class="font-bold uppercase text-[8px]">Hardware / Configuração:</p>
-                        <pre class="config-text" style="font-family: inherit; white-space: pre-wrap;">${l.configFinal}</pre>
-                        <p class="mt-1 font-bold text-right">TOTAL: R$ ${l.total}</p>
-                    </div>
+                    <p><strong>REPARO REALIZADO:</strong> ${l.reparo}</p>
+                    <p><strong>VALOR TOTAL:</strong> R$ ${l.total}</p>
                 </div>
             `).join('');
             window.print();
@@ -403,10 +333,10 @@
             const t = document.getElementById("toast");
             t.innerText = msg;
             t.classList.replace('opacity-0', 'opacity-100');
-            setTimeout(() => t.classList.replace('opacity-100', 'opacity-0'), 2500);
+            setTimeout(() => t.classList.replace('opacity-100', 'opacity-0'), 2000);
         }
 
-        atualizarLista();
+        atualizarListaNaTela();
     </script>
 </body>
 </html>
