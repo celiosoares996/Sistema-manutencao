@@ -10,25 +10,40 @@
         body { font-family: 'Inter', sans-serif; }
         .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
         
+        /* Ajustes para Impressão */
         @media print {
-            body { background: white !important; padding: 0 !important; }
+            body { background: white !important; padding: 0 !important; margin: 0 !important; }
             .no-print { display: none !important; }
             #print-area { 
                 display: grid !important; 
-                grid-template-cols: 1fr 1fr;
-                gap: 10px;
-                padding: 10px;
+                grid-template-columns: 1fr 1fr; /* Duas colunas por folha */
+                gap: 15px;
+                padding: 10mm;
             }
             .print-card {
-                border: 2px solid black !important;
+                border: 1px solid #000 !important;
                 padding: 10px !important;
-                font-size: 11px !important;
+                font-size: 10px !important;
                 page-break-inside: avoid;
-                margin-bottom: 5px;
+                display: flex;
+                flex-direction: column;
+                background: white !important;
             }
-            .print-card h2 { font-size: 14px !important; border-bottom: 1px solid black; margin-bottom: 5px; }
+            .print-card h2 { 
+                font-size: 12px !important; 
+                border-bottom: 1px solid black; 
+                margin-bottom: 4px; 
+                padding-bottom: 2px;
+            }
+            .print-card p { margin-bottom: 2px; }
+            .config-text { font-size: 9px !important; line-height: 1.1; }
         }
+
         #print-area { display: none; }
+        
+        /* Estilo da barra de rolagem da lista */
+        #lista-historico::-webkit-scrollbar { width: 4px; }
+        #lista-historico::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
 <body class="bg-slate-100 min-h-screen py-8 px-4">
@@ -150,29 +165,18 @@
                                         <span class="font-bold text-slate-700 text-xs">RAM 1 (R$40)</span>
                                         <button type="button" onclick="toggleTroca('ram1')" id="btn-ram1" class="text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca</button>
                                     </div>
-                                    <div class="grid grid-cols-1 gap-2">
-                                        <select id="ram1Model" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white">
-                                            <option value="">Selecione...</option>
-                                            <option>2GB DDR2</option>
-                                            <option>2GB DDR3</option>
-                                            <option>4GB DDR3</option>
-                                            <option>8GB DDR3</option>
-                                            <option>4GB DDR4</option>
-                                            <option>8GB DDR4</option>
-                                        </select>
-                                        <input type="text" id="ram1Num" placeholder="Tombamento RAM" class="px-3 py-2 rounded-lg border border-slate-300 text-sm outline-none">
-                                    </div>
-                                    <div id="troca-ram1" class="hidden mt-2 pt-2 border-t border-dashed border-slate-300 grid grid-cols-1 gap-2">
-                                        <select id="ram1ModelNovo" class="w-full px-3 py-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm">
+                                    <select id="ram1Model" class="w-full px-3 py-2 mb-2 rounded-lg border border-slate-300 text-sm bg-white">
+                                        <option value="">Selecione...</option>
+                                        <option>2GB DDR2</option><option>2GB DDR3</option><option>4GB DDR3</option>
+                                        <option>8GB DDR3</option><option>4GB DDR4</option><option>8GB DDR4</option>
+                                    </select>
+                                    <input type="text" id="ram1Num" placeholder="Tombamento" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm outline-none">
+                                    <div id="troca-ram1" class="hidden mt-2 pt-2 border-t border-dashed border-slate-300">
+                                        <select id="ram1ModelNovo" class="w-full px-3 py-2 mb-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm">
                                             <option value="">Nova RAM...</option>
-                                            <option>2GB DDR2</option>
-                                            <option>2GB DDR3</option>
-                                            <option>4GB DDR3</option>
-                                            <option>8GB DDR3</option>
-                                            <option>4GB DDR4</option>
-                                            <option>8GB DDR4</option>
+                                            <option>4GB DDR3</option><option>8GB DDR3</option><option>8GB DDR4</option>
                                         </select>
-                                        <input type="text" id="ram1NumNovo" placeholder="Novo Tombamento" class="px-3 py-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm outline-none">
+                                        <input type="text" id="ram1NumNovo" placeholder="Novo Tombamento" class="w-full px-3 py-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm outline-none">
                                     </div>
                                 </div>
                                 <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
@@ -180,19 +184,17 @@
                                         <span class="font-bold text-slate-700 text-xs">RAM 2 (R$40)</span>
                                         <button type="button" onclick="toggleTroca('ram2')" id="btn-ram2" class="text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca</button>
                                     </div>
-                                    <div class="grid grid-cols-1 gap-2">
-                                        <select id="ram2Model" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white">
-                                            <option value="">Selecione...</option>
-                                            <option>Nenhuma</option><option>2GB DDR3</option><option>4GB DDR3</option>
-                                        </select>
-                                        <input type="text" id="ram2Num" placeholder="Tombamento RAM" class="px-3 py-2 rounded-lg border border-slate-300 text-sm outline-none">
-                                    </div>
-                                    <div id="troca-ram2" class="hidden mt-2 pt-2 border-t border-dashed border-slate-300 grid grid-cols-1 gap-2">
-                                        <select id="ram2ModelNovo" class="w-full px-3 py-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm">
+                                    <select id="ram2Model" class="w-full px-3 py-2 mb-2 rounded-lg border border-slate-300 text-sm bg-white">
+                                        <option value="">Nenhuma</option>
+                                        <option>2GB DDR3</option><option>4GB DDR3</option>
+                                    </select>
+                                    <input type="text" id="ram2Num" placeholder="Tombamento" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm outline-none">
+                                    <div id="troca-ram2" class="hidden mt-2 pt-2 border-t border-dashed border-slate-300">
+                                        <select id="ram2ModelNovo" class="w-full px-3 py-2 mb-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm">
                                             <option value="">Nova RAM...</option>
                                             <option>4GB DDR3</option><option>8GB DDR3</option>
                                         </select>
-                                        <input type="text" id="ram2NumNovo" placeholder="Novo Tombamento" class="px-3 py-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm outline-none">
+                                        <input type="text" id="ram2NumNovo" placeholder="Novo Tombamento" class="w-full px-3 py-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm outline-none">
                                     </div>
                                 </div>
                             </div>
@@ -243,18 +245,17 @@
         </div>
 
         <div class="lg:col-span-1">
-            <div class="bg-white rounded-3xl card-shadow border border-slate-200 p-5 sticky top-8 flex flex-col max-h-[90vh]">
+            <div class="bg-white rounded-3xl card-shadow border border-slate-200 p-5 sticky top-8 flex flex-col h-[80vh]">
                 <div class="flex justify-between items-center mb-4 border-b pb-2">
                     <h3 class="font-bold text-slate-800">Histórico</h3>
                     <button onclick="limparTudo()" class="text-[10px] text-red-500 font-bold uppercase hover:underline">Limpar</button>
                 </div>
                 
                 <div id="lista-historico" class="space-y-3 overflow-y-auto pr-2 mb-6 flex-grow">
-                    <p class="text-xs text-slate-400 text-center py-4">Nenhum laudo salvo.</p>
-                </div>
+                    </div>
 
                 <button onclick="imprimirLote()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-sm shrink-0">
-                    <span>🖨️</span> Imprimir Selecionados
+                    <span>🖨️</span> Imprimir em Lote
                 </button>
             </div>
         </div>
@@ -267,7 +268,6 @@
     </div>
 
     <script>
-        // ... (Script permanece o mesmo para manter as funcionalidades)
         const PRECOS = { placaMae: 175, cpu: 50, ram1: 40, ram2: 40, disco: 110, taxa: 50 };
         let bd_laudos = JSON.parse(localStorage.getItem('meus_laudos')) || [];
 
@@ -276,7 +276,7 @@
             const btn = document.getElementById(`btn-${id}`);
             const isHidden = section.classList.contains('hidden');
             section.classList.toggle('hidden');
-            btn.innerText = isHidden ? "Remover" : "+ Troca";
+            btn.innerText = isHidden ? "Remover" : `+ Troca (R$${PRECOS[id]})`;
             btn.className = isHidden ? 
                 "text-[10px] font-bold px-3 py-1 rounded-full bg-red-500 text-white" : 
                 "text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600";
@@ -288,8 +288,9 @@
             ['placaMae', 'cpu', 'ram1', 'ram2', 'disco'].forEach(id => {
                 if (!document.getElementById(`troca-${id}`).classList.contains('hidden')) total += PRECOS[id];
             });
-            document.getElementById('totalDisplay').value = total.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-            return total;
+            const formatted = total.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+            document.getElementById('totalDisplay').value = formatted;
+            return formatted;
         }
 
         function getHardwareInfo() {
@@ -304,13 +305,14 @@
             comps.forEach(c => {
                 const mA = document.getElementById(`${c.id}Model`).value || "---";
                 const nA = document.getElementById(`${c.id}Num`)?.value || "";
-                atual += `${c.label}: ${mA} ${nA ? `(${nA})` : ''}\n`;
+                atual += `• ${c.label}: ${mA} ${nA ? `[${nA}]` : ''}\n`;
+                
                 if (!document.getElementById(`troca-${c.id}`).classList.contains('hidden')) {
                     const mN = document.getElementById(`${c.id}ModelNovo`).value || "---";
                     const nN = document.getElementById(`${c.id}NumNovo`)?.value || "";
-                    sugerido += `${c.label}: ${mN} ${nN ? `(${nN})` : ''} *NOVA*\n`;
+                    sugerido += `• ${c.label}: ${mN} ${nN ? `[${nN}]` : ''} *TROCA*\n`;
                 } else {
-                    sugerido += `${c.label}: ${mA} ${nA ? `(${nA})` : ''}\n`;
+                    sugerido += `• ${c.label}: ${mA} ${nA ? `[${nA}]` : ''}\n`;
                 }
             });
             return { atual, sugerido };
@@ -321,7 +323,7 @@
             if(!tomb) { alert("Digite o tombamento da máquina!"); return; }
 
             const hardware = getHardwareInfo();
-            const totalStr = document.getElementById('totalDisplay').value;
+            const totalStr = atualizarTotalNaTela();
             
             const email = `Darkson,\n\nSegue o diagnóstico da máquina:\n\n${tomb} - ${document.getElementById('setor').value} - ${document.getElementById('sede').value}\n\nDefeito: ${document.getElementById('defeito').value}\nDiagnóstico: ${document.getElementById('diagnostico').value}\nReparo: ${document.getElementById('reparo').value}\n\nConfiguração atual:\n${hardware.atual}\nConfiguração sugerida:\n${hardware.sugerido}\nTotal: R$ ${totalStr}\n\nAtt,`;
 
@@ -332,11 +334,11 @@
             const novoLaudo = {
                 id: Date.now(),
                 tombamento: tomb,
-                setor: document.getElementById('setor').value,
-                sede: document.getElementById('sede').value,
-                defeito: document.getElementById('defeito').value,
-                diagnostico: document.getElementById('diagnostico').value,
-                reparo: document.getElementById('reparo').value,
+                setor: document.getElementById('setor').value || "Não informado",
+                sede: document.getElementById('sede').value || "Não informado",
+                defeito: document.getElementById('defeito').value || "Não informado",
+                diagnostico: document.getElementById('diagnostico').value || "Não informado",
+                reparo: document.getElementById('reparo').value || "Não informado",
                 configFinal: hardware.sugerido,
                 total: totalStr,
                 data: new Date().toLocaleDateString('pt-BR'),
@@ -344,18 +346,12 @@
             };
 
             bd_laudos.unshift(novoLaudo);
-            localStorage.setItem('meus_laudos', JSON.stringify(bd_laudos));
-            
-            atualizarListaNaTela();
-            document.getElementById('formulario').reset();
-            
-            ['placaMae', 'cpu', 'ram1', 'ram2', 'disco'].forEach(id => {
-               const section = document.getElementById(`troca-${id}`);
-               if(!section.classList.contains('hidden')) toggleTroca(id);
-            });
-            atualizarTotalNaTela();
+            salvarEAtualizar();
             
             mostrarToast("📋 E-mail copiado e salvo!");
+            // Reseta alguns campos mas mantém sede/setor se quiser agilizar
+            document.getElementById('tombamento').value = "";
+            document.getElementById('defeito').value = "";
         }
 
         function atualizarListaNaTela() {
@@ -368,13 +364,13 @@
                 <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-200 group">
                     <input type="checkbox" ${l.selecionado ? 'checked' : ''} 
                         onchange="toggleCheck(${idx})" 
-                        class="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                        class="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer">
                     <div class="flex-1 min-w-0">
                         <p class="text-xs font-bold text-slate-700 truncate">${l.tombamento}</p>
-                        <p class="text-[10px] text-slate-500">${l.setor}</p>
+                        <p class="text-[10px] text-slate-500">${l.setor} | ${l.data}</p>
                     </div>
                     <button onclick="deletarItem(${idx})" class="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-all">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                     </button>
                 </div>
             `).join('');
@@ -386,34 +382,41 @@
         }
 
         function deletarItem(idx) {
-            bd_laudos.splice(idx, 1);
-            localStorage.setItem('meus_laudos', JSON.stringify(bd_laudos));
-            atualizarListaNaTela();
+            if(confirm("Excluir este item?")) {
+                bd_laudos.splice(idx, 1);
+                salvarEAtualizar();
+            }
         }
 
         function limparTudo() {
             if(confirm("Deseja apagar todo o histórico?")) {
                 bd_laudos = [];
-                localStorage.removeItem('meus_laudos');
-                atualizarListaNaTela();
+                salvarEAtualizar();
             }
+        }
+
+        function salvarEAtualizar() {
+            localStorage.setItem('meus_laudos', JSON.stringify(bd_laudos));
+            atualizarListaNaTela();
         }
 
         function imprimirLote() {
             const selecionados = bd_laudos.filter(l => l.selecionado);
-            if(selecionados.length === 0) { alert("Marque pelo menos um laudo!"); return; }
+            if(selecionados.length === 0) { alert("Marque pelo menos um laudo na lista lateral!"); return; }
 
             const printArea = document.getElementById('print-area');
             printArea.innerHTML = selecionados.map(l => `
                 <div class="print-card">
                     <h2 class="font-black uppercase">Relatório Técnico: ${l.tombamento}</h2>
-                    <p><strong>DATA:</strong> ${l.data} | <strong>SETOR/SEDE:</strong> ${l.setor} / ${l.sede}</p>
+                    <p><strong>DATA:</strong> ${l.data}</p>
+                    <p><strong>SETOR/SEDE:</strong> ${l.setor} / ${l.sede}</p>
                     <p><strong>DEFEITO:</strong> ${l.defeito}</p>
                     <p><strong>DIAGNÓSTICO:</strong> ${l.diagnostico}</p>
                     <p><strong>REPARO:</strong> ${l.reparo}</p>
-                    <div class="mt-2 border-t pt-1">
+                    <div class="mt-2 border-t border-black pt-1">
                         <p class="font-bold">CONFIGURAÇÃO FINAL:</p>
-                        <pre style="font-family: inherit; white-space: pre-wrap; font-size: 9px;">${l.configFinal}</pre>
+                        <pre class="config-text" style="font-family: inherit; white-space: pre-wrap;">${l.configFinal}</pre>
+                        <p class="mt-2 font-bold text-right">TOTAL: R$ ${l.total}</p>
                     </div>
                 </div>
             `).join('');
@@ -428,10 +431,8 @@
             setTimeout(() => t.classList.replace('opacity-100', 'opacity-0'), 2500);
         }
 
+        // Inicialização
         atualizarListaNaTela();
     </script>
 </body>
 </html>
-
-
-
