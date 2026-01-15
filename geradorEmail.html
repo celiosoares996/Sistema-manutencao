@@ -83,23 +83,53 @@
                         <div class="grid grid-cols-1 gap-4">
                             <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
                                 <div class="flex justify-between items-center mb-3">
-                                    <span class="font-bold text-slate-700 text-xs uppercase">Componente Principal</span>
-                                    <button type="button" onclick="toggleTroca('placaMae')" id="btn-placaMae" class="text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca</button>
+                                    <span class="font-bold text-slate-700 text-xs uppercase">Placa Mãe</span>
+                                    <button type="button" onclick="toggleTroca('placaMae')" id="btn-placaMae" class="text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca (R$175)</button>
                                 </div>
                                 <div class="grid grid-cols-2 gap-3">
-                                    <select id="placaMaeModel" onchange="atualizarTotalNaTela()" class="px-3 py-2 rounded-lg border border-slate-300 text-sm outline-none bg-white">
+                                    <select id="placaMaeModel" class="px-3 py-2 rounded-lg border border-slate-300 text-sm outline-none bg-white">
                                         <option value="">Selecione o Modelo...</option>
-                                        <option>GT H61 LGA 1155</option>
-                                        <option>Asus H61M-K LGA 1155</option>
-                                        <option>GA-H110M-M2 LGA 1151</option>
+                                        <option>Asus H61 LGA 1155</option><option>Jab H61 LGA 1155</option>
+                                        <option>Asus LGA 1151</option><option>Gigabyte H81 LGA 1150</option>
+                                        <option>Mancer H310 LGA 1151</option>
                                     </select>
-                                    <input type="text" id="placaMaeNum" placeholder="Tombamento Atual" class="px-3 py-2 rounded-lg border border-slate-300 text-sm outline-none">
+                                    <input type="text" id="placaMaeNum" placeholder="Tombamento" class="px-3 py-2 rounded-lg border border-slate-300 text-sm outline-none">
                                 </div>
                                 <div id="troca-placaMae" class="hidden mt-3 pt-3 border-t border-dashed border-slate-300 grid grid-cols-2 gap-3">
-                                    <input type="text" id="placaMaeNumNovo" placeholder="Novo Tombamento" class="px-3 py-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm outline-none">
+                                    <input type="text" id="placaMaeNumNovo" placeholder="Novo Tombamento" class="px-3 py-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm outline-none col-span-2">
                                 </div>
                             </div>
-                            <p class="text-[10px] text-slate-400 italic">Demais trocas automáticas seguem os valores padrão do sistema.</p>
+
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="font-bold text-slate-700 text-xs uppercase">Processador</span>
+                                    <button type="button" onclick="toggleTroca('cpu')" id="btn-cpu" class="text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca (R$50)</button>
+                                </div>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <select id="cpuModel" class="px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white"><option value="">Selecione...</option><option>Intel i3-2120</option><option>Intel i5-3470</option></select>
+                                    <input type="text" id="cpuNum" placeholder="Tombamento" class="px-3 py-2 rounded-lg border border-slate-300 text-sm outline-none">
+                                </div>
+                                <div id="troca-cpu" class="hidden mt-2 pt-2 border-t border-dashed border-slate-300"><input type="text" id="cpuNumNovo" placeholder="Novo Tombamento" class="w-full px-3 py-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm"></div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                                    <div class="flex justify-between items-center mb-3"><span class="font-bold text-slate-700 text-xs uppercase">RAM 1 (R$40)</span><button type="button" onclick="toggleTroca('ram1')" id="btn-ram1" class="text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca</button></div>
+                                    <input type="text" id="ram1Num" placeholder="Tombamento" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm mb-2 outline-none">
+                                    <div id="troca-ram1" class="hidden border-t border-dashed pt-2"><input type="text" id="ram1NumNovo" placeholder="Novo Tombamento" class="w-full px-3 py-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm"></div>
+                                </div>
+                                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                                    <div class="flex justify-between items-center mb-3"><span class="font-bold text-slate-700 text-xs uppercase">RAM 2 (R$40)</span><button type="button" onclick="toggleTroca('ram2')" id="btn-ram2" class="text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca</button></div>
+                                    <input type="text" id="ram2Num" placeholder="Tombamento" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm mb-2 outline-none">
+                                    <div id="troca-ram2" class="hidden border-t border-dashed pt-2"><input type="text" id="ram2NumNovo" placeholder="Novo Tombamento" class="w-full px-3 py-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm"></div>
+                                </div>
+                            </div>
+
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                                <div class="flex justify-between items-center mb-3"><span class="font-bold text-slate-700 text-xs uppercase">Disco</span><button type="button" onclick="toggleTroca('disco')" id="btn-disco" class="text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca (R$110)</button></div>
+                                <input type="text" id="discoNum" placeholder="Tombamento" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm mb-2 outline-none">
+                                <div id="troca-disco" class="hidden border-t border-dashed pt-2"><input type="text" id="discoNumNovo" placeholder="Novo Tombamento" class="w-full px-3 py-2 rounded-lg border-emerald-300 bg-emerald-50 text-sm"></div>
+                            </div>
                         </div>
                     </div>
 
@@ -154,10 +184,10 @@
     </div>
 
     <div id="print-area"></div>
-    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-emerald-600 text-white px-8 py-3 rounded-full shadow-2xl opacity-0 transition-all duration-500 z-50">📋 Copiado!</div>
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-emerald-600 text-white px-8 py-3 rounded-full shadow-2xl opacity-0 transition-all duration-500 z-50">📋 Copiado e Salvo!</div>
 
     <script>
-        const PRECOS = { placaMae: 175, taxa: 50 };
+        const PRECOS = { placaMae: 175, cpu: 50, ram1: 40, ram2: 40, disco: 110, taxa: 50 };
         let bd_laudos = JSON.parse(localStorage.getItem('meus_laudos')) || [];
 
         function aguardandoPeca() {
@@ -179,7 +209,6 @@
         function toggleTroca(id) {
             const section = document.getElementById(`troca-${id}`);
             const btn = document.getElementById(`btn-${id}`);
-            if(!section || !btn) return;
             const isHidden = section.classList.contains('hidden');
             section.classList.toggle('hidden');
             btn.innerText = isHidden ? "Remover" : "+ Troca";
@@ -189,9 +218,9 @@
 
         function atualizarTotalNaTela() {
             let total = PRECOS.taxa;
-            const el = document.getElementById(`troca-placaMae`);
-            if (el && !el.classList.contains('hidden')) total += PRECOS.placaMae;
-            
+            ['placaMae', 'cpu', 'ram1', 'ram2', 'disco'].forEach(id => {
+                if (!document.getElementById(`troca-${id}`).classList.contains('hidden')) total += PRECOS[id];
+            });
             const totalStr = total.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
             document.getElementById('totalDisplay').value = totalStr;
             return totalStr;
@@ -267,7 +296,7 @@
             printArea.innerHTML = selecionados.map(l => `
                 <div class="print-card">
                     <h2 class="font-black">RELATÓRIO: ${l.tombamento}</h2>
-                    <p><strong>SETOR:</strong> ${l.setor} | <strong>SEDE:</strong> ${l.sede}</p>
+                    <p><strong>DATA:</strong> ${l.data} | <strong>SETOR:</strong> ${l.setor}</p>
                     <p><strong>DIAGNÓSTICO:</strong> ${l.diagnostico}</p>
                     <p><strong>REPARO:</strong> ${l.reparo}</p>
                     <p><strong>VALOR TOTAL:</strong> R$ ${l.total}</p>
