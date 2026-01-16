@@ -310,7 +310,6 @@
     </div>
 
     <script>
-        // Definição dos nomes amigáveis para exibir no e-mail
         const LABEL_PEÇAS = {
             placaMae: "Placa mãe",
             cpu: "Processador",
@@ -321,6 +320,13 @@
 
         const PRECOS = { placaMae: 175, cpu: 50, ram1: 80, ram2: 80, disco: 110, taxa: 50 };
         let bd_laudos = JSON.parse(localStorage.getItem('meus_laudos')) || [];
+
+        function mostrarToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.classList.remove('opacity-0', '-translate-y-5');
+            setTimeout(() => t.classList.add('opacity-0', '-translate-y-5'), 3000);
+        }
 
         function toggleUpgradeMode() {
             const isUpgrade = document.getElementById('upgradeMode').checked;
@@ -377,10 +383,15 @@
             return total;
         }
 
-        function getHardwareInfo() {
-            const isUpgrade = document.getElementById('upgradeMode').checked;
-            if (isUpgrade) return { atual: "SOLICITAÇÃO DE UPGRADE", sugerido: "AGUARDANDO DEFINIÇÃO DE PEÇAS" };
+        function formatarDados() {
+            const tomb = document.getElementById('tombamento').value;
+            if(!tomb) { alert("Digite o tombamento da máquina!"); return; }
 
+            const isUpgrade = document.getElementById('upgradeMode').checked;
+            const totalStr = document.getElementById('totalDisplay').value;
+            
+            // Lógica de Detecção de Alteração de Peças
+            let houveTroca = false;
             const comps = [
                 { label: "Placa mãe", id: "placaMae" },
                 { label: "Processador", id: "cpu" },
@@ -388,48 +399,45 @@
                 { label: "Memória 2", id: "ram2" },
                 { label: "Armazenamento", id: "disco" }
             ];
+
             let atual = "", sugerido = "";
+            let listaPrecos = `Taxa de serviço: R$${PRECOS.taxa.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
+
             comps.forEach(c => {
                 const mA = document.getElementById(`${c.id}Model`).value || "---";
                 const nA = document.getElementById(`${c.id}Num`)?.value || "";
                 atual += `${c.label}: ${mA} ${nA ? `(${nA})` : ''}\n`;
-                if (!document.getElementById(`troca-${c.id}`).classList.contains('hidden')) {
+                
+                const emTroca = !document.getElementById(`troca-${c.id}`).classList.contains('hidden');
+                
+                if (emTroca) {
+                    houveTroca = true;
                     const mN = document.getElementById(`${c.id}ModelNovo`).value || "---";
                     const nN = document.getElementById(`${c.id}NumNovo`)?.value || "";
                     sugerido += `${c.label}: ${mN} ${nN ? `(${nN})` : ''} *NOVA*\n`;
+                    listaPrecos += `${LABEL_PEÇAS[c.id]}: R$${PRECOS[c.id].toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
                 } else {
                     sugerido += `${c.label}: ${mA} ${nA ? `(${nA})` : ''}\n`;
                 }
             });
-            return { atual, sugerido };
-        }
 
-        function formatarDados() {
-            const tomb = document.getElementById('tombamento').value;
-            if(!tomb) { alert("Digite o tombamento da máquina!"); return; }
-
-            const isUpgrade = document.getElementById('upgradeMode').checked;
-            const hardware = getHardwareInfo();
-            const totalStr = document.getElementById('totalDisplay').value;
-            const reparoValue = document.getElementById('reparo').value;
+            // Montagem do E-mail
+            let blocoConfiguracao = `Configuração atual:\n${atual}`;
             
-            // Lógica para listar valores individuais das peças no final do e-mail
-            let listaPrecos = "";
-            if (!isUpgrade) {
-                listaPrecos = `Taxa de serviço: R$${PRECOS.taxa.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
-                ['placaMae', 'cpu', 'ram1', 'ram2', 'disco'].forEach(id => {
-                    if (!document.getElementById(`troca-${id}`).classList.contains('hidden')) {
-                        listaPrecos += `${LABEL_PEÇAS[id]}: R$${PRECOS[id].toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
-                    }
-                });
+            // Se for Upgrade ou houve troca de peça, adiciona a Configuração Sugerida
+            if (isUpgrade) {
+                blocoConfiguracao = `Configuração atual:\nSOLICITAÇÃO DE UPGRADE\n\nConfiguração sugerida:\nAGUARDANDO DEFINIÇÃO DE PEÇAS`;
+            } else if (houveTroca) {
+                blocoConfiguracao += `\nConfiguração sugerida:\n${sugerido}\n${listaPrecos}`;
             }
 
-            const email = `Darkson,\n\nSegue o diagnóstico da máquina:\n\n${tomb} - ${document.getElementById('setor').value} - ${document.getElementById('sede').value}\n\nDefeito: ${document.getElementById('defeito').value}\nDiagnóstico: ${document.getElementById('diagnostico').value}\nReparo: ${reparoValue}\n\nConfiguração atual:\n${hardware.atual}\nConfiguração sugerida:\n${hardware.sugerido}\n${listaPrecos}Total: R$ ${totalStr}\n\nAtt,`;
+            const email = `Darkson,\n\nSegue o diagnóstico da máquina:\n\n${tomb} - ${document.getElementById('setor').value} - ${document.getElementById('sede').value}\n\nDefeito: ${document.getElementById('defeito').value}\nDiagnóstico: ${document.getElementById('diagnostico').value}\nReparo: ${document.getElementById('reparo').value}\n\n${blocoConfiguracao}\nTotal: R$ ${totalStr}\n\nAtt,`;
 
             document.getElementById("resultado").innerText = email;
             document.getElementById("resultado-container").classList.remove('hidden');
             navigator.clipboard.writeText(email);
 
+            // Salvar no Histórico
             const novoLaudo = {
                 id: Date.now(),
                 tombamento: tomb,
@@ -437,8 +445,8 @@
                 sede: document.getElementById('sede').value,
                 defeito: document.getElementById('defeito').value,
                 diagnostico: document.getElementById('diagnostico').value,
-                reparo: reparoValue,
-                configFinal: hardware.sugerido,
+                reparo: document.getElementById('reparo').value,
+                configFinal: sugerido,
                 total: totalStr,
                 data: new Date().toLocaleDateString('pt-BR'),
                 selecionado: true
@@ -451,7 +459,6 @@
             document.getElementById('formulario').reset();
             if(isUpgrade) document.getElementById('upgradeMode').checked = false;
             toggleUpgradeMode();
-            
             mostrarToast("📋 E-mail copiado e salvo!");
         }
 
@@ -496,33 +503,32 @@
             }
         }
 
-        function mostrarToast(msg) {
-            const t = document.getElementById('toast');
-            t.innerText = msg;
-            t.style.opacity = "1";
-            setTimeout(() => t.style.opacity = "0", 3000);
-        }
-
         function imprimirLote() {
             const selecionados = bd_laudos.filter(l => l.selecionado);
-            if(selecionados.length === 0) { alert("Marque pelo menos um laudo!"); return; }
+            if(selecionados.length === 0) { alert("Selecione ao menos um laudo!"); return; }
 
-            const printArea = document.getElementById('print-area');
-            printArea.innerHTML = selecionados.map(l => `
+            const area = document.getElementById('print-area');
+            area.innerHTML = selecionados.map(l => `
                 <div class="print-card">
-                    <h2 class="font-black uppercase">Relatório Técnico: ${l.tombamento}</h2>
-                    <p><strong>DATA:</strong> ${l.data} | <strong>SETOR/SEDE:</strong> ${l.setor} - ${l.sede}</p>
-                    <p><strong>DEFEITO:</strong> ${l.defeito}</p>
-                    <p><strong>DIAGNÓSTICO:</strong> ${l.diagnostico}</p>
-                    <p><strong>REPARO:</strong> ${l.reparo}</p>
-                    <p class="mt-2 text-[10px] leading-tight"><strong>CONFIGURAÇÃO FINAL:</strong><br>${l.configFinal.replace(/\n/g, ' | ')}</p>
-                    <p class="mt-1 text-right font-bold">TOTAL: R$ ${l.total}</p>
+                    <h2>LAUDO TÉCNICO - ${l.tombamento}</h2>
+                    <p><b>Data:</b> ${l.data} | <b>Setor:</b> ${l.setor}</p>
+                    <p><b>Sede:</b> ${l.sede}</p>
+                    <p><b>Defeito:</b> ${l.defeito}</p>
+                    <p><b>Diagnóstico:</b> ${l.diagnostico}</p>
+                    <p><b>Reparo:</b> ${l.reparo}</p>
+                    <p><b>Configuração:</b><br>${l.configFinal.replace(/\n/g, '<br>')}</p>
+                    <p><b>Valor Total:</b> R$ ${l.total}</p>
+                    <div style="margin-top:20px; border-top:1px solid black; text-align:center; padding-top:5px">
+                        Assinatura Técnico
+                    </div>
                 </div>
             `).join('');
+
             window.print();
         }
 
-        window.onload = atualizarListaNaTela;
+        // Inicializar histórico
+        atualizarListaNaTela();
     </script>
 </body>
 </html>
