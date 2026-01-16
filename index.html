@@ -3,149 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Manutenção - KMC2</title>
+    <title>Painel KMC2 - Gestão de Manutenção</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="bg-gray-100 min-h-screen font-sans">
+<body class="bg-slate-50 min-h-screen font-sans">
 
-    <nav class="bg-slate-800 p-4 text-white shadow-lg">
+    <nav class="bg-slate-900 p-4 text-white shadow-xl border-b-4 border-blue-500">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold tracking-wider text-blue-400">KMC2 <span class="text-white">| Tech</span></h1>
-            <span id="data-atual" class="text-sm opacity-75"></span>
+            <div class="flex items-center gap-3">
+                <div class="bg-blue-500 p-2 rounded-lg">
+                    <i class="fas fa-microchip text-white"></i>
+                </div>
+                <h1 class="text-xl font-black tracking-tighter uppercase">KMC2 <span class="text-blue-400">System</span></h1>
+            </div>
+            <div id="relogio" class="text-sm font-mono bg-slate-800 px-3 py-1 rounded border border-slate-700"></div>
         </div>
     </nav>
 
-    <div class="container mx-auto p-6">
-        <div id="menu-container" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <button onclick="abrirModulo('email')" class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all border-b-4 border-orange-500 flex flex-col items-center gap-3">
-                <i class="fas fa-envelope-open-text text-3xl text-orange-500"></i>
-                <span class="font-bold text-gray-700">Gerar E-mail</span>
-            </button>
+    <main class="container mx-auto p-8">
+        <header class="mb-10 text-center md:text-left">
+            <h2 class="text-3xl font-bold text-slate-800">Bem-vindo ao Painel de Controle</h2>
+            <p class="text-slate-500">Selecione a operação que deseja realizar hoje.</p>
+        </header>
 
-            <button onclick="abrirModulo('manutencao')" class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all border-b-4 border-blue-500 flex flex-col items-center gap-3">
-                <i class="fas fa-tools text-3xl text-blue-500"></i>
-                <span class="font-bold text-gray-700">Nova Manutenção</span>
-            </button>
-
-            <button onclick="abrirModulo('relatorio')" class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all border-b-4 border-green-500 flex flex-col items-center gap-3">
-                <i class="fas fa-chart-line text-3xl text-green-500"></i>
-                <span class="font-bold text-gray-700">Relatórios</span>
-            </button>
-        </div>
-
-        <div id="modulo-email" class="hidden bg-white p-8 rounded-xl shadow-lg max-w-2xl mx-auto">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                <i class="fas fa-paper-plane text-orange-500"></i> Redigir E-mail
-            </h2>
-            <div class="space-y-4">
-                <input type="text" id="nome-cliente-email" placeholder="Nome do Cliente" class="w-full p-3 border rounded-lg outline-none focus:ring-2 focus:ring-orange-400">
-                <input type="text" id="servico-realizado" placeholder="Serviço Realizado (ex: Formatação)" class="w-full p-3 border rounded-lg outline-none focus:ring-2 focus:ring-orange-400">
-                <textarea id="resultado-email" readonly class="w-full p-4 bg-gray-50 border rounded-lg h-40 text-sm text-gray-600 italic"></textarea>
-                <div class="flex gap-2">
-                    <button onclick="gerarTextoEmail()" class="flex-1 bg-orange-500 text-white font-bold py-3 rounded-lg hover:bg-orange-600 transition">Gerar Texto</button>
-                    <button onclick="copiarEmail()" class="bg-gray-200 px-6 rounded-lg hover:bg-gray-300"><i class="fas fa-copy"></i></button>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <a href="geradorEmail.html" class="group bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-blue-500 hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center">
+                <div class="w-16 h-16 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-envelope-open-text text-2xl"></i>
                 </div>
-            </div>
-        </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Gerar E-mail</h3>
+                <p class="text-slate-500 text-sm">Redigir aviso de conclusão de serviço para o cliente.</p>
+                <span class="mt-6 text-orange-600 font-semibold flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Acessar <i class="fas fa-arrow-right text-xs"></i>
+                </span>
+            </a>
 
-        <div id="modulo-manutencao" class="hidden bg-white p-8 rounded-xl shadow-lg max-w-2xl mx-auto">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                <i class="fas fa-plus-circle text-blue-500"></i> Registrar Manutenção
-            </h2>
-            <form id="registro-form" class="space-y-4">
-                <input type="email" id="email-cliente" required placeholder="E-mail da Máquina/Cliente" class="w-full p-3 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500">
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="number" id="valor-total" value="50.00" step="0.01" class="p-3 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500">
-                    <input type="date" id="data-servico" class="p-3 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500">
+            <a href="manutencao.html" class="group bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-blue-500 hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center">
+                <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-tools text-2xl"></i>
                 </div>
-                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition">Salvar no Histórico</button>
-            </form>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Nova Manutenção</h3>
+                <p class="text-slate-500 text-sm">Registrar entrada de máquina e calcular taxa de R$ 50,00.</p>
+                <span class="mt-6 text-blue-600 font-semibold flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Acessar <i class="fas fa-arrow-right text-xs"></i>
+                </span>
+            </a>
+
+            <a href="relatorio.html" class="group bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-green-500 hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center">
+                <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-file-invoice-dollar text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Relatório Mensal</h3>
+                <p class="text-slate-500 text-sm">Filtrar manutenções por data e gerar fechamento do mês.</p>
+                <span class="mt-6 text-green-600 font-semibold flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Acessar <i class="fas fa-arrow-right text-xs"></i>
+                </span>
+            </a>
+
         </div>
 
-        <div id="modulo-relatorio" class="hidden bg-white p-8 rounded-xl shadow-lg">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800 uppercase tracking-tight text-sm">Histórico Mensal</h2>
-                <input type="month" id="filtro-mes" onchange="carregarTabela()" class="p-2 border rounded-lg text-sm">
+        <section class="mt-12 bg-slate-800 rounded-2xl p-6 text-white flex flex-wrap justify-around items-center shadow-inner">
+            <div class="text-center p-4">
+                <span class="block text-slate-400 text-xs uppercase font-bold tracking-widest">Serviços Hoje</span>
+                <span class="text-3xl font-black text-blue-400">0</span>
             </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead>
-                        <tr class="bg-gray-50 text-gray-500 text-xs uppercase">
-                            <th class="p-4">Data</th>
-                            <th class="p-4">Máquina</th>
-                            <th class="p-4">Serviço</th>
-                            <th class="p-4">Taxa</th>
-                            <th class="p-4">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabela-corpo" class="text-sm"></tbody>
-                </table>
+            <div class="h-10 w-px bg-slate-700 hidden md:block"></div>
+            <div class="text-center p-4">
+                <span class="block text-slate-400 text-xs uppercase font-bold tracking-widest">Total Mensal</span>
+                <span class="text-3xl font-black text-green-400">R$ 0,00</span>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <script>
-        // --- NAVEGAÇÃO ---
-        function abrirModulo(id) {
-            ['modulo-email', 'modulo-manutencao', 'modulo-relatorio'].forEach(m => {
-                document.getElementById(m).classList.add('hidden');
-            });
-            document.getElementById('modulo-' + id).classList.remove('hidden');
-            if(id === 'relatorio') carregarTabela();
+        // Atualiza o relógio em tempo real
+        function atualizarRelogio() {
+            const agora = new Date();
+            document.getElementById('relogio').innerText = agora.toLocaleString('pt-br');
         }
-
-        // --- GERADOR DE EMAIL ---
-        function gerarTextoEmail() {
-            const nome = document.getElementById('nome-cliente-email').value || "Cliente";
-            const servico = document.getElementById('servico-realizado').value || "Manutenção";
-            const texto = `Olá ${nome},\n\nInformamos que o serviço de "${servico}" em sua máquina foi concluído com sucesso e já está disponível para retirada.\n\nValor total: R$ 50,00 (Taxa de serviço inclusa).\n\nAtenciosamente,\nEquipe KMC2`;
-            document.getElementById('resultado-email').value = texto;
-        }
-
-        function copiarEmail() {
-            const areaTexto = document.getElementById('resultado-email');
-            areaTexto.select();
-            document.execCommand('copy');
-            alert("Texto copiado!");
-        }
-
-        // --- LÓGICA DE DADOS ---
-        document.getElementById('data-servico').valueAsDate = new Date();
-        document.getElementById('data-atual').innerText = new Date().toLocaleDateString('pt-br');
-
-        const form = document.getElementById('registro-form');
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const total = parseFloat(document.getElementById('valor-total').value);
-            const taxa = total * 0.0909; 
-            const registro = {
-                email: document.getElementById('email-cliente').value,
-                total: total.toFixed(2),
-                taxa: taxa.toFixed(2),
-                servico: (total - taxa).toFixed(2),
-                data: document.getElementById('data-servico').value
-            };
-            const lista = JSON.parse(localStorage.getItem('kmc2_dados') || '[]');
-            lista.push(registro);
-            localStorage.setItem('kmc2_dados', JSON.stringify(lista));
-            alert('Salvo com sucesso!');
-            form.reset();
-        });
-
-        function carregarTabela() {
-            const corpo = document.getElementById('tabela-corpo');
-            const lista = JSON.parse(localStorage.getItem('kmc2_dados') || '[]');
-            corpo.innerHTML = lista.map(m => `
-                <tr class="border-b hover:bg-gray-50">
-                    <td class="p-4">${m.data.split('-').reverse().join('/')}</td>
-                    <td class="p-4 font-medium">${m.email}</td>
-                    <td class="p-4 text-gray-500">R$ ${m.servico}</td>
-                    <td class="p-4 text-orange-500">R$ ${m.taxa}</td>
-                    <td class="p-4 font-bold text-blue-600">R$ ${m.total}</td>
-                </tr>
-            `).join('');
-        }
+        setInterval(atualizarRelogio, 1000);
+        atualizarRelogio();
     </script>
 </body>
 </html>
