@@ -9,150 +9,140 @@
 </head>
 <body class="bg-gray-100 min-h-screen font-sans">
 
-    <nav class="bg-blue-600 p-4 text-white shadow-lg">
+    <nav class="bg-slate-800 p-4 text-white shadow-lg">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold tracking-wider">KMC2 | Service Manager</h1>
-            <span id="data-atual" class="text-sm"></span>
+            <h1 class="text-xl font-bold tracking-wider text-blue-400">KMC2 <span class="text-white">| Tech</span></h1>
+            <span id="data-atual" class="text-sm opacity-75"></span>
         </div>
     </nav>
 
     <div class="container mx-auto p-6">
-        <div id="menu-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <button onclick="abrirModulo('manutencao')" class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all border-l-4 border-blue-500 flex items-center justify-between group">
-                <div>
-                    <h3 class="text-lg font-bold text-gray-700 group-hover:text-blue-600">Nova Manutenção</h3>
-                    <p class="text-sm text-gray-500">Registrar serviço e calcular taxa</p>
-                </div>
-                <i class="fas fa-tools text-3xl text-blue-500"></i>
+        <div id="menu-container" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <button onclick="abrirModulo('email')" class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all border-b-4 border-orange-500 flex flex-col items-center gap-3">
+                <i class="fas fa-envelope-open-text text-3xl text-orange-500"></i>
+                <span class="font-bold text-gray-700">Gerar E-mail</span>
             </button>
 
-            <button onclick="abrirModulo('relatorio')" class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all border-l-4 border-green-500 flex items-center justify-between group">
-                <div>
-                    <h3 class="text-lg font-bold text-gray-700 group-hover:text-green-600">Relatórios / Filtros</h3>
-                    <p class="text-sm text-gray-500">Consultar histórico e mensal</p>
-                </div>
-                <i class="fas fa-file-invoice-dollar text-3xl text-green-500"></i>
+            <button onclick="abrirModulo('manutencao')" class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all border-b-4 border-blue-500 flex flex-col items-center gap-3">
+                <i class="fas fa-tools text-3xl text-blue-500"></i>
+                <span class="font-bold text-gray-700">Nova Manutenção</span>
+            </button>
+
+            <button onclick="abrirModulo('relatorio')" class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all border-b-4 border-green-500 flex flex-col items-center gap-3">
+                <i class="fas fa-chart-line text-3xl text-green-500"></i>
+                <span class="font-bold text-gray-700">Relatórios</span>
             </button>
         </div>
 
-        <div id="form-manutencao" class="hidden bg-white p-8 rounded-xl shadow-lg max-w-2xl mx-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">Registrar Manutenção</h2>
-                <button onclick="fecharModulos()" class="text-gray-400 hover:text-red-500"><i class="fas fa-times"></i></button>
+        <div id="modulo-email" class="hidden bg-white p-8 rounded-xl shadow-lg max-w-2xl mx-auto">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <i class="fas fa-paper-plane text-orange-500"></i> Redigir E-mail
+            </h2>
+            <div class="space-y-4">
+                <input type="text" id="nome-cliente-email" placeholder="Nome do Cliente" class="w-full p-3 border rounded-lg outline-none focus:ring-2 focus:ring-orange-400">
+                <input type="text" id="servico-realizado" placeholder="Serviço Realizado (ex: Formatação)" class="w-full p-3 border rounded-lg outline-none focus:ring-2 focus:ring-orange-400">
+                <textarea id="resultado-email" readonly class="w-full p-4 bg-gray-50 border rounded-lg h-40 text-sm text-gray-600 italic"></textarea>
+                <div class="flex gap-2">
+                    <button onclick="gerarTextoEmail()" class="flex-1 bg-orange-500 text-white font-bold py-3 rounded-lg hover:bg-orange-600 transition">Gerar Texto</button>
+                    <button onclick="copiarEmail()" class="bg-gray-200 px-6 rounded-lg hover:bg-gray-300"><i class="fas fa-copy"></i></button>
+                </div>
             </div>
-            
+        </div>
+
+        <div id="modulo-manutencao" class="hidden bg-white p-8 rounded-xl shadow-lg max-w-2xl mx-auto">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <i class="fas fa-plus-circle text-blue-500"></i> Registrar Manutenção
+            </h2>
             <form id="registro-form" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-semibold text-gray-600">E-mail do Cliente / Máquina</label>
-                    <input type="email" id="email-cliente" required class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="exemplo@cliente.com">
-                </div>
-                
+                <input type="email" id="email-cliente" required placeholder="E-mail da Máquina/Cliente" class="w-full p-3 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500">
                 <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-600">Valor Total (R$)</label>
-                        <input type="number" id="valor-total" value="50.00" step="0.01" class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-600">Data do Serviço</label>
-                        <input type="date" id="data-servico" class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                    </div>
+                    <input type="number" id="valor-total" value="50.00" step="0.01" class="p-3 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="date" id="data-servico" class="p-3 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
-
-                <div class="bg-blue-50 p-4 rounded-lg">
-                    <p class="text-sm text-blue-700">O sistema calculará automaticamente a taxa inclusa.</p>
-                </div>
-
-                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition">Salvar Manutenção</button>
+                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition">Salvar no Histórico</button>
             </form>
         </div>
 
-        <div id="secao-relatorio" class="hidden bg-white p-8 rounded-xl shadow-lg">
-            <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
-                <h2 class="text-2xl font-bold text-gray-800">Histórico de Serviços</h2>
-                <div class="flex gap-2">
-                    <input type="month" id="filtro-mes" class="p-2 border rounded-lg">
-                    <button onclick="gerarRelatorioMensal()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">Gerar Mensal</button>
-                </div>
+        <div id="modulo-relatorio" class="hidden bg-white p-8 rounded-xl shadow-lg">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 uppercase tracking-tight text-sm">Histórico Mensal</h2>
+                <input type="month" id="filtro-mes" onchange="carregarTabela()" class="p-2 border rounded-lg text-sm">
             </div>
-
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
+                <table class="w-full text-left">
                     <thead>
-                        <tr class="bg-gray-100 text-gray-600 uppercase text-xs font-bold">
-                            <th class="p-4 border-b">Data</th>
-                            <th class="p-4 border-b">E-mail/Máquina</th>
-                            <th class="p-4 border-b">Serviço</th>
-                            <th class="p-4 border-b">Taxa</th>
-                            <th class="p-4 border-b">Total</th>
+                        <tr class="bg-gray-50 text-gray-500 text-xs uppercase">
+                            <th class="p-4">Data</th>
+                            <th class="p-4">Máquina</th>
+                            <th class="p-4">Serviço</th>
+                            <th class="p-4">Taxa</th>
+                            <th class="p-4">Total</th>
                         </tr>
                     </thead>
-                    <tbody id="tabela-corpo">
-                        </tbody>
+                    <tbody id="tabela-corpo" class="text-sm"></tbody>
                 </table>
             </div>
         </div>
     </div>
 
     <script>
-        // Lógica de Navegação
-        function abrirModulo(modulo) {
-            document.getElementById('form-manutencao').classList.add('hidden');
-            document.getElementById('secao-relatorio').classList.add('hidden');
-            
-            if(modulo === 'manutencao') document.getElementById('form-manutencao').classList.remove('hidden');
-            if(modulo === 'relatorio') {
-                document.getElementById('secao-relatorio').classList.remove('hidden');
-                carregarTabela();
-            }
+        // --- NAVEGAÇÃO ---
+        function abrirModulo(id) {
+            ['modulo-email', 'modulo-manutencao', 'modulo-relatorio'].forEach(m => {
+                document.getElementById(m).classList.add('hidden');
+            });
+            document.getElementById('modulo-' + id).classList.remove('hidden');
+            if(id === 'relatorio') carregarTabela();
         }
 
-        function fecharModulos() {
-            document.getElementById('form-manutencao').classList.add('hidden');
-            document.getElementById('secao-relatorio').classList.add('hidden');
+        // --- GERADOR DE EMAIL ---
+        function gerarTextoEmail() {
+            const nome = document.getElementById('nome-cliente-email').value || "Cliente";
+            const servico = document.getElementById('servico-realizado').value || "Manutenção";
+            const texto = `Olá ${nome},\n\nInformamos que o serviço de "${servico}" em sua máquina foi concluído com sucesso e já está disponível para retirada.\n\nValor total: R$ 50,00 (Taxa de serviço inclusa).\n\nAtenciosamente,\nEquipe KMC2`;
+            document.getElementById('resultado-email').value = texto;
         }
 
-        // Preencher data atual por padrão
+        function copiarEmail() {
+            const areaTexto = document.getElementById('resultado-email');
+            areaTexto.select();
+            document.execCommand('copy');
+            alert("Texto copiado!");
+        }
+
+        // --- LÓGICA DE DADOS ---
         document.getElementById('data-servico').valueAsDate = new Date();
         document.getElementById('data-atual').innerText = new Date().toLocaleDateString('pt-br');
 
-        // Lógica de Armazenamento (LocalStorage para agora)
         const form = document.getElementById('registro-form');
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            
-            const valorTotal = parseFloat(document.getElementById('valor-total').value);
-            const taxa = valorTotal * 0.0909; // Para que 50,00 seja o total final
-            const valorServico = valorTotal - taxa;
-
-            const novaManutencao = {
+            const total = parseFloat(document.getElementById('valor-total').value);
+            const taxa = total * 0.0909; 
+            const registro = {
                 email: document.getElementById('email-cliente').value,
-                valorTotal: valorTotal.toFixed(2),
+                total: total.toFixed(2),
                 taxa: taxa.toFixed(2),
-                servico: valorServico.toFixed(2),
+                servico: (total - taxa).toFixed(2),
                 data: document.getElementById('data-servico').value
             };
-
-            // Salvar no "Banco de Dados" do navegador
-            const historico = JSON.parse(localStorage.getItem('manutencoes') || '[]');
-            historico.push(novaManutencao);
-            localStorage.setItem('manutencoes', JSON.stringify(historico));
-
-            alert('Manutenção salva com sucesso!');
+            const lista = JSON.parse(localStorage.getItem('kmc2_dados') || '[]');
+            lista.push(registro);
+            localStorage.setItem('kmc2_dados', JSON.stringify(lista));
+            alert('Salvo com sucesso!');
             form.reset();
-            document.getElementById('data-servico').valueAsDate = new Date();
         });
 
         function carregarTabela() {
             const corpo = document.getElementById('tabela-corpo');
-            const historico = JSON.parse(localStorage.getItem('manutencoes') || '[]');
-            
-            corpo.innerHTML = historico.map(m => `
-                <tr class="hover:bg-gray-50 text-gray-700">
-                    <td class="p-4 border-b">${new Date(m.data).toLocaleDateString('pt-br')}</td>
-                    <td class="p-4 border-b">${m.email}</td>
-                    <td class="p-4 border-b text-blue-600">R$ ${m.servico}</td>
-                    <td class="p-4 border-b text-orange-600">R$ ${m.taxa}</td>
-                    <td class="p-4 border-b font-bold">R$ ${m.valorTotal}</td>
+            const lista = JSON.parse(localStorage.getItem('kmc2_dados') || '[]');
+            corpo.innerHTML = lista.map(m => `
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="p-4">${m.data.split('-').reverse().join('/')}</td>
+                    <td class="p-4 font-medium">${m.email}</td>
+                    <td class="p-4 text-gray-500">R$ ${m.servico}</td>
+                    <td class="p-4 text-orange-500">R$ ${m.taxa}</td>
+                    <td class="p-4 font-bold text-blue-600">R$ ${m.total}</td>
                 </tr>
             `).join('');
         }
