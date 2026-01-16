@@ -30,7 +30,6 @@
         }
         #print-area { display: none; }
 
-        /* Estilo para o Toggle Switch */
         .switch { position: relative; display: inline-block; width: 50px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 24px; }
@@ -169,7 +168,7 @@
                                 <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
                                     <div class="flex justify-between items-center mb-3">
                                         <span class="font-bold text-slate-700 text-xs">RAM 1</span>
-                                        <button type="button" onclick="toggleTroca('ram1')" id="btn-ram1" class="btn-peca text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca</button>
+                                        <button type="button" onclick="toggleTroca('ram1')" id="btn-ram1" class="btn-peca text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca (R$80)</button>
                                     </div>
                                     <div class="grid grid-cols-1 gap-2">
                                         <select id="ram1Model" class="field-peca w-full px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white">
@@ -201,7 +200,7 @@
                                 <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
                                     <div class="flex justify-between items-center mb-3">
                                         <span class="font-bold text-slate-700 text-xs">RAM 2</span>
-                                        <button type="button" onclick="toggleTroca('ram2')" id="btn-ram2" class="btn-peca text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca</button>
+                                        <button type="button" onclick="toggleTroca('ram2')" id="btn-ram2" class="btn-peca text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-600">+ Troca (R$80)</button>
                                     </div>
                                     <div class="grid grid-cols-1 gap-2">
                                         <select id="ram2Model" class="field-peca w-full px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white">
@@ -311,7 +310,16 @@
     </div>
 
     <script>
-        const PRECOS = { placaMae: 175, cpu: 50, ram1: 40, ram2: 40, disco: 110, taxa: 50 };
+        // Definição dos nomes amigáveis para exibir no e-mail
+        const LABEL_PEÇAS = {
+            placaMae: "Placa mãe",
+            cpu: "Processador",
+            ram1: "Memória ram",
+            ram2: "Memória ram",
+            disco: "SSD"
+        };
+
+        const PRECOS = { placaMae: 175, cpu: 50, ram1: 80, ram2: 80, disco: 110, taxa: 50 };
         let bd_laudos = JSON.parse(localStorage.getItem('meus_laudos')) || [];
 
         function toggleUpgradeMode() {
@@ -327,7 +335,6 @@
                 reparoField.readOnly = true;
                 reparoField.classList.add('bg-slate-100');
                 
-                // Resetar trocas ativas
                 ['placaMae', 'cpu', 'ram1', 'ram2', 'disco'].forEach(id => {
                     const section = document.getElementById(`troca-${id}`);
                     if(!section.classList.contains('hidden')) toggleTroca(id);
@@ -406,7 +413,18 @@
             const totalStr = document.getElementById('totalDisplay').value;
             const reparoValue = document.getElementById('reparo').value;
             
-            const email = `Darkson,\n\nSegue o diagnóstico da máquina:\n\n${tomb} - ${document.getElementById('setor').value} - ${document.getElementById('sede').value}\n\nDefeito: ${document.getElementById('defeito').value}\nDiagnóstico: ${document.getElementById('diagnostico').value}\nReparo: ${reparoValue}\n\nConfiguração atual:\n${hardware.atual}\nConfiguração sugerida:\n${hardware.sugerido}\nTotal: R$ ${totalStr}\n\nAtt,`;
+            // Lógica para listar valores individuais das peças no final do e-mail
+            let listaPrecos = "";
+            if (!isUpgrade) {
+                listaPrecos = `Taxa de serviço: R$${PRECOS.taxa.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
+                ['placaMae', 'cpu', 'ram1', 'ram2', 'disco'].forEach(id => {
+                    if (!document.getElementById(`troca-${id}`).classList.contains('hidden')) {
+                        listaPrecos += `${LABEL_PEÇAS[id]}: R$${PRECOS[id].toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
+                    }
+                });
+            }
+
+            const email = `Darkson,\n\nSegue o diagnóstico da máquina:\n\n${tomb} - ${document.getElementById('setor').value} - ${document.getElementById('sede').value}\n\nDefeito: ${document.getElementById('defeito').value}\nDiagnóstico: ${document.getElementById('diagnostico').value}\nReparo: ${reparoValue}\n\nConfiguração atual:\n${hardware.atual}\nConfiguração sugerida:\n${hardware.sugerido}\n${listaPrecos}Total: R$ ${totalStr}\n\nAtt,`;
 
             document.getElementById("resultado").innerText = email;
             document.getElementById("resultado-container").classList.remove('hidden');
@@ -478,6 +496,13 @@
             }
         }
 
+        function mostrarToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.style.opacity = "1";
+            setTimeout(() => t.style.opacity = "0", 3000);
+        }
+
         function imprimirLote() {
             const selecionados = bd_laudos.filter(l => l.selecionado);
             if(selecionados.length === 0) { alert("Marque pelo menos um laudo!"); return; }
@@ -486,37 +511,18 @@
             printArea.innerHTML = selecionados.map(l => `
                 <div class="print-card">
                     <h2 class="font-black uppercase">Relatório Técnico: ${l.tombamento}</h2>
-                    <p><strong>DATA:</strong> ${l.data} | <strong>SETOR/SEDE:</strong> ${l.setor} / ${l.sede}</p>
+                    <p><strong>DATA:</strong> ${l.data} | <strong>SETOR/SEDE:</strong> ${l.setor} - ${l.sede}</p>
                     <p><strong>DEFEITO:</strong> ${l.defeito}</p>
                     <p><strong>DIAGNÓSTICO:</strong> ${l.diagnostico}</p>
                     <p><strong>REPARO:</strong> ${l.reparo}</p>
-                    <div class="mt-2 border-t pt-1">
-                        <p class="font-bold">CONFIGURAÇÃO FINAL:</p>
-                        <pre style="font-family: inherit; white-space: pre-wrap; font-size: 9px;">${l.configFinal}</pre>
-                    </div>
+                    <p class="mt-2 text-[10px] leading-tight"><strong>CONFIGURAÇÃO FINAL:</strong><br>${l.configFinal.replace(/\n/g, ' | ')}</p>
+                    <p class="mt-1 text-right font-bold">TOTAL: R$ ${l.total}</p>
                 </div>
             `).join('');
-
             window.print();
         }
 
-        function mostrarToast(msg) {
-            const t = document.getElementById("toast");
-            t.innerText = msg;
-            t.classList.replace('opacity-0', 'opacity-100');
-            setTimeout(() => t.classList.replace('opacity-100', 'opacity-0'), 2500);
-        }
-
-        atualizarListaNaTela();
+        window.onload = atualizarListaNaTela;
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
